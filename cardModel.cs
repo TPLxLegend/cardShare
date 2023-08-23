@@ -10,17 +10,20 @@ public class cardModel : ScriptableObject
     public string CardDescription;
     public Sprite icon;
     public int Count;
-
+    public Effect[] cardEffect;
     #endregion
 
     #region methods
     public virtual void effect(GameObject target)
     {
         Debug.Log("Trigger effect:" + this.name);
+        foreach (Effect effect in this.cardEffect){
+            effect.trigger(target);
+        }
     }
     #endregion
 }
-
+[CreateAssetMenu(menuName = "card/equip")]
 class equipCard : cardModel
 {
     override public void effect(GameObject target)
@@ -30,7 +33,7 @@ class equipCard : cardModel
 
     }
 }
-
+[CreateAssetMenu(menuName = "card/attack")]
 class attackCard : cardModel
 {
     override public void effect(GameObject target)
@@ -38,7 +41,7 @@ class attackCard : cardModel
 
     }
 }
-
+[CreateAssetMenu(menuName = "card/spell")]
 class spellCard : cardModel
 {
     public int dmg;
@@ -55,10 +58,11 @@ class spellCard : cardModel
 
     }
 }
-
+[CreateAssetMenu(menuName = "card/continueSpell")]
 class continuesSpellCard:spellCard{
 
 }
+[CreateAssetMenu(menuName = "card/trap")]
 class trapCard : cardModel
 {
     override public void effect(GameObject target)
