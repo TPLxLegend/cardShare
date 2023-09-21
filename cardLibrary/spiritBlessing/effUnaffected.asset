@@ -9,11 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43db50107a6c67348a923fa31b769af0, type: 3}
-  m_Name: frostballDmg
+  m_Script: {fileID: 11500000, guid: f7bba3e78df912e4db695c8b906ca2a6, type: 3}
+  m_Name: effUnaffected
   m_EditorClassIdentifier: 
   effect_rate: 100
   duration: 1
-  effect_detail: 
+  detail: 
   callbyseccond: 1
-  dmg: 5
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  TargetTypeName: slow

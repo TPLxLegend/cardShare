@@ -1,48 +1,52 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using UnityEngine.PlayerLoop;
 
-[RequireComponent(typeof(Rigidbody), typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
 public class skillObj : MonoBehaviour
 {
     public Transform target
     {
         set
         {
+            if (!agent) agent = GetComponent<NavMeshAgent>();
             agent.SetDestination(value.position);
         }
     }
-    public List<GameObject> objInRange;
-    public UnityEvent<GameObject,GameObject> collisionEnter;
-    public UnityEvent<GameObject,GameObject> triggerEnter;
-    //Rigidbody rb;
+    public List<GameObject> objInRange;//co the them thu cong 
+    public UnityEvent<GameObject, GameObject> collisionEnter, triggerEnter, onDestroy, triggerExit;
+    Rigidbody rb;
     NavMeshAgent agent;
+    public GameObject source;
     void Start()
     {
-        // rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        collisionEnter.Invoke(this.gameObject,collision.gameObject);
-    }
-    void OnTriggerEnter(Collider collider){
-        onChain(collider.gameObject);
-        triggerEnter.Invoke(this.gameObject,collider.gameObject);
-    }
-    void OnTriggerExit(Collider collider){
-        offChain(collider.gameObject);
-    }
+        collisionEnter.Invoke(gameObject, collision.gameObject);
+        Debug.Log("collison:" + collision.gameObject);
 
-
-    virtual protected void onChain(GameObject gameObject){
-        targetDetect.playerInArea.OnChain(gameObject,objInRange);
     }
-    virtual protected void offChain(GameObject gameObject){
-        targetDetect.playerInArea.OffChain(gameObject,objInRange);
+    void OnTriggerEnter(Collider collider)
+    {
+        triggerEnter.Invoke(this.gameObject, collider.gameObject);
+    }
+    void OnTriggerExit(Collider collider)
+    {
+        triggerExit.Invoke(this.gameObject, collider.gameObject);
+    }
+    public void OnDestroy()
+    {
+        Debug.Log("destroy");
+        triggerEnter.RemoveAllListeners();
+        triggerExit.RemoveAllListeners();
+        collisionEnter.RemoveAllListeners();
+        onDestroy.Invoke(this.gameObject, source);
+        onDestroy.RemoveAllListeners();
     }
 }
+

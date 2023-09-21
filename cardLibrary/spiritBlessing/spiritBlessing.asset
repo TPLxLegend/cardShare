@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
-  m_Name: FrostBall 1
+  m_Name: spiritBlessing
   m_EditorClassIdentifier: 
-  CardName: "C\u1EA7u tuy\u1EBFt"
-  CardType: 3
+  CardName: 
+  CardType: 0
   cardClass: 0
   icon: {fileID: 0}
   Count: 1
@@ -21,6 +21,6 @@ MonoBehaviour:
   cooldown: 3
   skillObj: {fileID: 0}
   cardEffect:
-  - {fileID: 11400000, guid: effcd903f625f3c41a98a75bfe1596fb, type: 2}
-  - {fileID: 11400000, guid: 904a44da1d1170f438c905e958791510, type: 2}
-  processTime: 1
+  - {fileID: 11400000, guid: 725dbb656caafc74e95336456dfb315c, type: 2}
+  - {fileID: 11400000, guid: 03775e97812e3e847a15bcccb5109435, type: 2}
+  processTime: 10

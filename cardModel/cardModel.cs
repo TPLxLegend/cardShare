@@ -1,33 +1,16 @@
 using UnityEngine;
 using UnityEngine.VFX;
 
-public enum typeTarget
-{
-    seft,
-    enemys,
-    allys
-}
-public enum cardClass
-{
-    wizzard,
-    swordman,
-    archer
-}
-public enum cardType
-{
-    attack,
-    trap,
-    equip,
-    spell
-}
-
 [CreateAssetMenu(menuName = "card")]
 public class cardModel : ScriptableObject
 {
     #region properties
     public string CardName;
+    public cardTag[] cardTag;
     public cardType CardType;
     public cardClass cardClass = cardClass.wizzard;
+    public targetFilterType detecttype;
+    public triggerType triggerType;
 
     public string CardDescription
     {
@@ -48,25 +31,28 @@ public class cardModel : ScriptableObject
     public GameObject skillObj;
     public Effect[] cardEffect;
     public float processTime = 1;
+
     #endregion
 
     #region methods
     public virtual void effect(Transform tf, Transform targetTranform = null) // lam sao cho cac vi du: target = enemys, allys, seft 
     {
-        Debug.Log("Trigger effect:" + this.name);
-
         //instance of skill object or summon something
-        GameObject vfxObj = Instantiate(skillObj, tf.position, Quaternion.identity);
-        skillObj skillObjScript = vfxObj.GetComponent<skillObj>();
-        Destroy(vfxObj, processTime);
+        Vector3 position = tf.position;
         if (targetTranform)
         {
-            var vfx = vfxObj.GetComponent<VisualEffect>();
-            skillObjScript.target = targetTranform;
+            Vector3 dir = (targetTranform.position - tf.position).normalized * skillObj.GetComponent<SphereCollider>().radius;
+            position += dir + new Vector3(0.1f, 0.1f, 0.1f);
         }
-        skillObjScript.collisionEnter.AddListener(vfxResolve);
 
+        GameObject vfxObj = Instantiate(skillObj, position, Quaternion.identity);
+        skillObj skillObjScript = vfxObj.GetComponent<skillObj>();
+        skillObjScript.source = tf.gameObject;
+        Destroy(vfxObj, processTime);
 
+        skillObjScript.target = targetTranform;
+        Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
+        Dic.singleton.trigger[triggerType].addTrigger(skillObjScript,cardEffect);
     }
     #region count
     public bool addCard(int num)
@@ -92,23 +78,8 @@ public class cardModel : ScriptableObject
     }
     #endregion
 
-    public virtual void vfxResolve(GameObject obj,GameObject collision)
-    {
-        Debug.Log(obj);
-        foreach (Effect effect in cardEffect)
-        {
-            effect.triggerEffect(obj.GetComponent<skillObj>().objInRange.ToArray());
-        }
-    }
+    
     #endregion
-}
 
-public interface ISummon
-{
-    void summon(GameObject target);
-}
 
-public interface IEffect
-{
-    void effect(GameObject[] target);
 }
