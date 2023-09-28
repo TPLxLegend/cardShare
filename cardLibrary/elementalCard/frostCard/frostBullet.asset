@@ -10,25 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
-  m_Name: frostLotus
+  m_Name: frostBullet
   m_EditorClassIdentifier: 
-  CardName: "C\u1EA7u tuy\u1EBFt"
-  cardTag: 0000000002000000
+  CardName: "L\xE1 b\xE0i b\u0103ng gi\xE1"
+  cardTag: 000000000500000002000000
   CardType: 2
   cardClass: 0
   skillMoveType: 0
   detecttype: 0
-  triggerType: 4
+  triggerType: 1
   BaseDescription: 
   icon: {fileID: 0}
   Count: 1
   maxCount: 3
-  cooldown: 3
-  skillObj: {fileID: 8036204945849929174, guid: a920b7aa8808b9243a831631ba5e9417,
+  cooldown: 1
+  skillObj: {fileID: 4048387581951239484, guid: dca74ac1f9ce0f645acce3f7fb1f0b97,
     type: 3}
   cardEffect:
-  - {fileID: 11400000, guid: effcd903f625f3c41a98a75bfe1596fb, type: 2}
-  - {fileID: 11400000, guid: 9893f4ec61670f24db377c5ecdef92e4, type: 2}
-  - {fileID: 11400000, guid: 9e718f156b80ebb45ae5278318cb16bf, type: 2}
+  - {fileID: 11400000, guid: dd8925d728050c643b6bcb9d73a0f583, type: 2}
+  timeStandby: 0
   processTime: 5
-  speed: 1
+  speed: 5

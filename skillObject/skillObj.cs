@@ -1,35 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody),typeof(SphereCollider))]
 public class skillObj : MonoBehaviour
 {
-    public Transform target
-    {
-        set
-        {
-            if (!agent) agent = GetComponent<NavMeshAgent>();
-            agent.SetDestination(value.position);
-        }
-    }
-    public List<GameObject> objInRange;//co the them thu cong 
+    public List<GameObject> objInRange;
     public UnityEvent<GameObject, GameObject> collisionEnter, triggerEnter, onDestroy, triggerExit;
-    Rigidbody rb;
-    NavMeshAgent agent;
+    public UnityEvent<skillObj> onUpdate;
+
     public GameObject source;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        agent = GetComponent<NavMeshAgent>();
+        
     }
-
+    void Update(){
+        onUpdate.Invoke(this);
+    }
     void OnCollisionEnter(Collision collision)
     {
         collisionEnter.Invoke(gameObject, collision.gameObject);
         Debug.Log("collison:" + collision.gameObject);
-
     }
     void OnTriggerEnter(Collider collider)
     {
@@ -47,6 +38,7 @@ public class skillObj : MonoBehaviour
         collisionEnter.RemoveAllListeners();
         onDestroy.Invoke(this.gameObject, source);
         onDestroy.RemoveAllListeners();
+        onUpdate.RemoveAllListeners();
     }
 }
 

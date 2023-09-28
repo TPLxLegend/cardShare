@@ -1,43 +1,80 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-public enum skillMoveType{
-    line,ziczac
+using UnityEngine.AI;
+public enum skillMoveType
+{
+    line, ziczac, trace, circle
 }
-public partial class Dic{
-    public static Dictionary<skillMoveType,SkillMoveType> moveTypes{get =>new Dictionary<skillMoveType, SkillMoveType>(){
-        {skillMoveType.line,new line()},
-        {skillMoveType.ziczac,new ziczac()}    
-    };}
+public partial class Dic
+{
+    public Dictionary<skillMoveType, SkillMoveType> moveTypes = new Dictionary<skillMoveType, SkillMoveType>(){
+        {skillMoveType.line,line.ins},
+        {skillMoveType.ziczac,ziczac.ins} ,
+        {skillMoveType.trace,trace.ins},
+        {skillMoveType.circle,circle.ins}
+    };
 }
+
 public interface SkillMoveType
 {
     public static skillMoveType ins;
+    public static int a;
+    public void move(GameObject seft, Vector3 targetPosition, float speed)
+    {
 
-    public void move(Rigidbody rb, Vector3 dir, float speed)
-    {
-        //return null;
     }
-    public async void moveAsync(Rigidbody rb, Vector3 dir, float speed)
+    public async void addMoveAsync(GameObject seft, Vector3 targetPosition, float speed, int delayTime)
     {
-        var res = Task.Run(() =>
+        await Task.Delay(delayTime);
+        seft.GetComponent<skillObj>().onUpdate.AddListener((s) =>
         {
-            move(rb, dir, speed);
+            move(seft, targetPosition, speed);
         });
     }
 }
 
 public class line : SkillMoveType
 {
-    public void move(Rigidbody rb, Vector3 dir, float speed)
+    line() { }
+    public static line ins = new line();
+
+    public void move(GameObject seft, Vector3 targetPosition, float speed)
     {
-        rb.velocity = dir.normalized * speed;
+        seft.transform.position += (targetPosition - seft.transform.position).normalized * speed * Time.deltaTime;
     }
 }
 public class ziczac : SkillMoveType
 {
-    public void move(Rigidbody rb, Vector3 dir, float speed)
+    ziczac() { }
+    public static ziczac ins = new ziczac();
+
+    public void move(GameObject seft, Vector3 targetPosition, float speed)
     {
 
+    }
+}
+public class trace : SkillMoveType
+{
+    trace() { }
+    public static trace ins = new trace();
+
+    public void move(GameObject seft, Vector3 targetPosition, float speed)
+    {
+        if (seft.TryGetComponent(out NavMeshAgent agent))
+        {
+            agent.SetDestination(targetPosition);
+        }
+    }
+}
+
+public class circle : SkillMoveType
+{
+    circle() { }
+    public static circle ins = new circle();
+
+    public void move(GameObject seft, Vector3 targetPosition, float speed)
+    {
+        seft.transform.RotateAround(targetPosition, Vector3.up, speed * Time.deltaTime);
     }
 }

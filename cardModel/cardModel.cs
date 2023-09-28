@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 [CreateAssetMenu(menuName = "card")]
 public class cardModel : ScriptableObject
@@ -7,16 +6,17 @@ public class cardModel : ScriptableObject
     #region properties
     public string CardName;
     public cardTag[] cardTag;
-    public cardType CardType;
+    public cardType CardType = cardType.spell;
     public cardClass cardClass = cardClass.wizzard;
-    public targetFilterType detecttype;
-    public triggerType triggerType;
+    public skillMoveType skillMoveType;
+    public targetFilterType detecttype = targetFilterType.allInArea;
+    public triggerType triggerType = triggerType.whenHitEnemy;
 
     public string CardDescription
     {
         get
         {
-            string details = this.CardName + "\n" + this.CardType + '\n' + this.cardClass;
+            string details = this.CardName + "\n" + this.CardType + '\n' + this.cardClass + "\n" + this.BaseDescription + "\n";
             foreach (Effect eff in this.cardEffect)
             {
                 details += eff.effect_detail + " ";
@@ -24,35 +24,37 @@ public class cardModel : ScriptableObject
             return details;
         }
     }
+    [SerializeField] string BaseDescription;
     public Sprite icon;
     public int Count = 1;
     public int maxCount = 3;
     public float cooldown = 3;
     public GameObject skillObj;
     public Effect[] cardEffect;
+    public int timeStandby = 0;
     public float processTime = 1;
+    public float speed = 1;
 
     #endregion
 
     #region methods
-    public virtual void effect(Transform tf, Transform targetTranform = null) // lam sao cho cac vi du: target = enemys, allys, seft 
+    public virtual void effect(Transform tf, Vector3 targetPosition) // lam sao cho cac vi du: target = enemys, allys, seft 
     {
-        //instance of skill object or summon something
         Vector3 position = tf.position;
-        if (targetTranform)
-        {
-            Vector3 dir = (targetTranform.position - tf.position).normalized * skillObj.GetComponent<SphereCollider>().radius;
-            position += dir + new Vector3(0.1f, 0.1f, 0.1f);
-        }
+        Quaternion rot = Quaternion.identity;
+        Vector3 dir = (targetPosition - tf.position).normalized * skillObj.GetComponent<SphereCollider>().radius;
+        position += 0.1f * dir;
+        rot = Quaternion.LookRotation(dir);
 
-        GameObject vfxObj = Instantiate(skillObj, position, Quaternion.identity);
-        skillObj skillObjScript = vfxObj.GetComponent<skillObj>();
+        GameObject InsSkillObj = Instantiate(skillObj, position, rot);
+        skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
+
         skillObjScript.source = tf.gameObject;
-        Destroy(vfxObj, processTime);
+        Destroy(InsSkillObj, processTime);
 
-        skillObjScript.target = targetTranform;
+        Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
         Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
-        Dic.singleton.trigger[triggerType].addTrigger(skillObjScript,cardEffect);
+        Dic.singleton.trigger[triggerType].addTrigger(skillObjScript, cardEffect);
     }
     #region count
     public bool addCard(int num)
@@ -78,7 +80,7 @@ public class cardModel : ScriptableObject
     }
     #endregion
 
-    
+
     #endregion
 
 
