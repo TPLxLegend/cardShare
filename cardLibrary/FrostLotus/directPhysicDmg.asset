@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 07a125452d9fecb4fb3b41b271037db1, type: 3}
   m_Name: directPhysicDmg
   m_EditorClassIdentifier: Assembly-CSharp::directDamge
   effect_rate: 100
@@ -27,5 +27,5 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
-  dmg: 50
+  dmg: 20
   dmgType: 0

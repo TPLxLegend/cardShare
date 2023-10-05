@@ -4,7 +4,6 @@ using UnityEngine.UIElements;
 
 public class card : MonoBehaviour
 {
-    public InputSys inputs;
     cardModel cardModel;
     public GameObject target;
     public GameObject player;
@@ -21,7 +20,7 @@ public class card : MonoBehaviour
     void click()
     {
         focus=!focus;
-       // cardModel.effect();
+        
         Debug.Log("click");
     }
     #endregion
@@ -29,14 +28,11 @@ public class card : MonoBehaviour
     #region mono-method
     void Awake()
     {
-        //inputs = new InputSys();
+        
     }
     void Start()
     {
-        // inputs.Enable();
-        // inputs.player.Enable();
-
-        // inputs.player.cardAim.performed+=_=>click();
+      
 
     }
     

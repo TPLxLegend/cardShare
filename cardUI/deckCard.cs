@@ -10,7 +10,6 @@ public class deckCard : MonoBehaviour
     [SerializeField] List<GameObject> cardUIs;
     public int sizeDeck { get => cards.Count; }
 
-    NetworkManager networkManager;
     public GameObject playerObj;
 
     public bool addCard(cardModel card, int num)
@@ -64,7 +63,8 @@ public class deckCard : MonoBehaviour
         cardModel card = cards[0];
         if (!card)
         {
-//deck out 
+            //deck out 
+            
             return;
         }
         removeCard(card, 1);
@@ -76,10 +76,6 @@ public class deckCard : MonoBehaviour
     #region  mono
     void Start()
     {
-        networkManager = NetworkManager.Singleton;
-        if (networkManager)
-            playerObj = networkManager.ConnectedClients[networkManager.LocalClientId].PlayerObject.gameObject;
-
 
     }
     #endregion

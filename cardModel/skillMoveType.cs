@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public enum skillMoveType
 {
-    line, ziczac, trace, circle
+    line, ziczac, trace, circle,tele
 }
 public partial class Dic
 {
@@ -12,7 +12,8 @@ public partial class Dic
         {skillMoveType.line,line.ins},
         {skillMoveType.ziczac,ziczac.ins} ,
         {skillMoveType.trace,trace.ins},
-        {skillMoveType.circle,circle.ins}
+        {skillMoveType.circle,circle.ins},
+        {skillMoveType.tele,tele.ins}
     };
 }
 
@@ -77,4 +78,14 @@ public class circle : SkillMoveType
     {
         seft.transform.RotateAround(targetPosition, Vector3.up, speed * Time.deltaTime);
     }
+}
+
+public class tele:SkillMoveType{
+    tele(){}
+    public static tele ins=new tele();
+    public void move(GameObject seft, Vector3 targetPosition, float speed)
+    {
+        seft.transform.position = targetPosition;
+    }
+
 }

@@ -44,11 +44,11 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _expColor: 7
+    - _expColor: 2
     - _freshnalPow: 0.38
     - _noiseScale: 50
     - _petalDept: -1.06
-    - _upValue: 0
+    - _upValue: 1.5
     m_Colors:
     - _Color: {r: 0, g: 0.32162285, b: 1, a: 0}
   m_BuildTextureStacks: []
