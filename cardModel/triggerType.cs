@@ -53,7 +53,7 @@ public class WhenHitPlayer : hitTrigger
     WhenHitPlayer() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
-        if (collision.TryGetComponent(out CharacterInfo info))
+        if (collision.TryGetComponent(out characterInfo info))
         {
             Debug.Log("resolve");
             base.Resolve(collision, cardEffect, skillObj);
@@ -67,11 +67,11 @@ public class WhenHitEnemy : hitTrigger
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out CharacterInfo info))
+        if (!collision.TryGetComponent(out characterInfo info))
         {
             return;
         }
-        if (info.teamID != skillObj.source.GetComponent<CharacterInfo>().teamID)
+        if (info.teamID != skillObj.source.GetComponent<characterInfo>().teamID)
         {
             return;
         }
@@ -85,11 +85,11 @@ public class WhenHitTeammate : hitTrigger
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out CharacterInfo info))
+        if (!collision.TryGetComponent(out characterInfo info))
         {
             return;
         }
-        if (info.teamID == skillObj.source.GetComponent<CharacterInfo>().teamID)
+        if (info.teamID == skillObj.source.GetComponent<characterInfo>().teamID)
         {
             return;
         }
@@ -103,11 +103,11 @@ public class WhenHitSeft : hitTrigger
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out CharacterInfo info))
+        if (!collision.TryGetComponent(out characterInfo info))
         {
             return;
         }
-        if (info == skillObj.source.GetComponent<CharacterInfo>())
+        if (info == skillObj.source.GetComponent<characterInfo>())
         {
             return;
         }
