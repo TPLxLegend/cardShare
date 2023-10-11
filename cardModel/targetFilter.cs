@@ -39,10 +39,10 @@ public interface targetFilter
 
 }
 
-public class playerInArea : targetFilter
+public class playerFilter : targetFilter
 {
-    playerInArea() { }
-    public static playerInArea ins = new playerInArea();
+    playerFilter() { }
+    public static playerFilter ins = new playerFilter();
     public bool Filter(GameObject go)
     {
         playerInfo player;
@@ -54,4 +54,48 @@ public class playerInArea : targetFilter
         return false;
     }
 }
+public class enemyFilter:targetFilter{
+    enemyFilter(){}
+    public static enemyFilter ins=new enemyFilter();
+    public bool Filter(GameObject go)
+    {
+       
+        if (go.TryGetComponent(out CharacterInfo player))
+        {
+            Debug.Log("detected:" + player);
+            return (player.teamID!=playerController.Instance.playerInfo.teamID);
+        }
+        return false;
+    }
+}
+public class allyFilter:targetFilter{
+    allyFilter(){}
+    public static allyFilter ins=new allyFilter();
+    public bool Filter(GameObject go)
+    {
+        if (go.TryGetComponent(out CharacterInfo player))
+        {
+            if(player==playerController.Instance.playerInfo) return false;
+            Debug.Log("detected:" + player);
+            return player.teamID==playerController.Instance.playerInfo.teamID;
+        }
+        return false;
+    }
+}
+       
+public class seftFilter:targetFilter{
+    seftFilter(){}
+    public static seftFilter ins=new seftFilter();
+    public bool Filter(GameObject go)
+    {
+        if (go.TryGetComponent(out CharacterInfo player))
+        {
+            if(player==playerController.Instance.playerInfo) return true;
+       
+        }
+        return false;
+    }
+}
+       
+
 

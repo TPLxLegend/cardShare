@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardName: 
   CardType: 0
-  cardClass: 0
+  charJob: 0
   icon: {fileID: 0}
   Count: 1
   maxCount: 3

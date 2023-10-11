@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 501270431757447752}
   - component: {fileID: 4117630831262222074}
   - component: {fileID: 7293133415356287407}
-  - component: {fileID: 441684048588048194}
+  - component: {fileID: 57049367580652961}
   m_Layer: 0
-  m_Name: emtySkillObj
+  m_Name: healingArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   source: {fileID: 0}
---- !u!114 &441684048588048194
+--- !u!114 &57049367580652961
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -10,26 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
-  m_Name: frostLotus
+  m_Name: electriicCard
   m_EditorClassIdentifier: 
-  CardName: "Sen tuy\u1EBFt"
-  cardTag: 0000000002000000
+  CardName: "L\xE1 b\xE0i \u0111\u1ED9c t\u1ED1"
+  cardTag: 000000000300000005000000
   CardType: 2
   charJob: 0
-  skillMoveType: 4
+  skillMoveType: 0
   detecttype: 1
-  triggerType: 5
+  triggerType: 1
   BaseDescription: 
   icon: {fileID: 0}
   Count: 1
   maxCount: 3
   cooldown: 3
-  skillObj: {fileID: 5199947530810059855, guid: 811ab90cc42e87b4fa73cd8b6af5212d,
+  skillObj: {fileID: 4048387581951239484, guid: 633d41001e101f7419566ea74d1a126d,
     type: 3}
   cardEffect:
-  - {fileID: 11400000, guid: effcd903f625f3c41a98a75bfe1596fb, type: 2}
-  - {fileID: 11400000, guid: 9893f4ec61670f24db377c5ecdef92e4, type: 2}
-  - {fileID: 11400000, guid: 9e718f156b80ebb45ae5278318cb16bf, type: 2}
-  timeStandby: 1
-  processTime: 5
+  - {fileID: 11400000, guid: e0305edf5a7e0134284ee426bd12b7cc, type: 2}
+  timeStandby: 0
+  processTime: 3
   speed: 1

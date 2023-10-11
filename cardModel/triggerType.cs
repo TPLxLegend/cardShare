@@ -1,46 +1,33 @@
 using UnityEngine;
-using UnityEngine.VFX;
-
 public interface TriggerType
 {
     public static TriggerType ins;
-    public void addTrigger(skillObj skillObj, Effect[] effects);
+    public void addTrigger(skillObj skillObj, Effect[] effects)
+    {
+
+    }
 
 }
 public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen 
 {
-    public static hitTrigger ins=new hitTrigger();
+    public static hitTrigger ins = new hitTrigger();
     public virtual void addTrigger(skillObj skillObj, Effect[] effects)
     {
         skillObj.collisionEnter.AddListener((g1, g2) =>
         {
             Resolve(g2, effects, skillObj);
-        });
-        skillObj.collisionEnter.AddListener((s, t) =>
-        {
-            Debug.Log("S:" + s);
-            try
-            {
-                var effHitObj = s.transform.Find("effectHit").gameObject;
-                var T = (t.transform.position - s.transform.position).normalized;
-                Debug.Log(T);
-                effHitObj.GetComponent<VisualEffect>().SetVector3("dir", T);
-                effHitObj.SetActive(true);
-            }
-            catch
-            {
-                Debug.Log("fail to find effectHit");
-            }
+            skillObj.Trigger(g2);
         });
     }
-    public virtual void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj) // kich hoat gan eff len player or enemy 
+
+    public virtual void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj) // kich hoat gan eff len player or enemyFilter 
     {
         var players = skillObj.objInRange;
         var source = skillObj.source;
-        var mesh=skillObj.gameObject.GetComponent<MeshRenderer>();
+        var mesh = skillObj.gameObject.GetComponent<MeshRenderer>();
         mesh.enabled = false;
-        skillObj.gameObject.GetComponent<MeshCollider>().enabled=false;
-        skillObj.gameObject.GetComponent<SphereCollider>().enabled=false;
+        skillObj.gameObject.GetComponent<MeshCollider>().enabled = false;
+        skillObj.gameObject.GetComponent<SphereCollider>().enabled = false;
         Debug.Log("player Resolve:" + players.ToString() + " \nCount:" + players.Count);
         foreach (Effect effect in cardEffect)
         {
@@ -62,11 +49,11 @@ public delegate void triggerFunc(GameObject obj, GameObject collision);
 
 public class WhenHitPlayer : hitTrigger
 {
-    new public static WhenHitPlayer ins=new WhenHitPlayer();
+    new public static WhenHitPlayer ins = new WhenHitPlayer();
     WhenHitPlayer() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
-        if (collision.TryGetComponent(out ICharacterInfo info))
+        if (collision.TryGetComponent(out CharacterInfo info))
         {
             Debug.Log("resolve");
             base.Resolve(collision, cardEffect, skillObj);
@@ -75,16 +62,16 @@ public class WhenHitPlayer : hitTrigger
 }
 public class WhenHitEnemy : hitTrigger
 {
-    new public static WhenHitEnemy ins=new WhenHitEnemy();
+    new public static WhenHitEnemy ins = new WhenHitEnemy();
     WhenHitEnemy() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out ICharacterInfo info))
+        if (!collision.TryGetComponent(out CharacterInfo info))
         {
             return;
         }
-        if (info.teamID != skillObj.source.GetComponent<ICharacterInfo>().teamID)
+        if (info.teamID != skillObj.source.GetComponent<CharacterInfo>().teamID)
         {
             return;
         }
@@ -93,16 +80,16 @@ public class WhenHitEnemy : hitTrigger
 }
 public class WhenHitTeammate : hitTrigger
 {
-    new public static WhenHitTeammate ins=new WhenHitTeammate();
+    new public static WhenHitTeammate ins = new WhenHitTeammate();
     WhenHitTeammate() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out ICharacterInfo info))
+        if (!collision.TryGetComponent(out CharacterInfo info))
         {
             return;
         }
-        if (info.teamID == skillObj.source.GetComponent<ICharacterInfo>().teamID)
+        if (info.teamID == skillObj.source.GetComponent<CharacterInfo>().teamID)
         {
             return;
         }
@@ -111,37 +98,37 @@ public class WhenHitTeammate : hitTrigger
 }
 public class WhenHitSeft : hitTrigger
 {
-    new public static WhenHitSeft ins=new WhenHitSeft();
+    new public static WhenHitSeft ins = new WhenHitSeft();
     WhenHitSeft() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out ICharacterInfo info))
+        if (!collision.TryGetComponent(out CharacterInfo info))
         {
             return;
         }
-        if (info == skillObj.source.GetComponent<ICharacterInfo>())
+        if (info == skillObj.source.GetComponent<CharacterInfo>())
         {
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
     }
 }
-public class Imediately : TriggerType
+public class InArea : TriggerType
 {
-    Imediately() { }
-    public static Imediately ins = new Imediately();
+    InArea() { }
+    public static InArea ins = new InArea();
 
     public void addTrigger(skillObj skillObj, Effect[] effects)
     {
-        skillObj.triggerEnter.AddListener((go, collision) =>
-        {
-            func(skillObj, collision, effects);
-        });
         skillObj.triggerEnter.AddListener((s, t) =>
         {
-            s.GetComponentsInChildren<VisualEffect>()[0].enabled = true;
+            //if(skillObj.){return;}
+            Debug.Log("trigger enter in area");
+            func(skillObj, t, effects);
+            skillObj.Trigger(t);
         });
+
     }
     public void func(skillObj skillO, GameObject collision, Effect[] effects)
     {

@@ -10,26 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
-  m_Name: frostLotus
+  m_Name: healing
   m_EditorClassIdentifier: 
-  CardName: "Sen tuy\u1EBFt"
-  cardTag: 0000000002000000
+  CardName: "ph\xE1p tr\u1EADn h\u1ED3i ph\u1EE5c"
+  cardTag: 0100000004000000
   CardType: 2
   charJob: 0
-  skillMoveType: 4
-  detecttype: 1
-  triggerType: 5
+  skillMoveType: 0
+  detecttype: 0
+  triggerType: 2
   BaseDescription: 
   icon: {fileID: 0}
   Count: 1
   maxCount: 3
   cooldown: 3
-  skillObj: {fileID: 5199947530810059855, guid: 811ab90cc42e87b4fa73cd8b6af5212d,
+  skillObj: {fileID: 5199947530810059855, guid: 6e5fb350cc1133046bffb306dd73ca7c,
     type: 3}
   cardEffect:
-  - {fileID: 11400000, guid: effcd903f625f3c41a98a75bfe1596fb, type: 2}
-  - {fileID: 11400000, guid: 9893f4ec61670f24db377c5ecdef92e4, type: 2}
-  - {fileID: 11400000, guid: 9e718f156b80ebb45ae5278318cb16bf, type: 2}
-  timeStandby: 1
-  processTime: 5
+  - {fileID: 11400000, guid: bf1547c8fc2805e4b86e920f6bc2f60a, type: 2}
+  - {fileID: 11400000, guid: c65c9e70cffc0424b8052ca251a4e69e, type: 2}
+  timeStandby: 0
+  processTime: 1
   speed: 1

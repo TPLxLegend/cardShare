@@ -7,16 +7,16 @@ public class cardModel : ScriptableObject
     public string CardName;
     public cardTag[] cardTag;
     public cardType CardType = cardType.spell;
-    public cardClass cardClass = cardClass.wizzard;
+    public charJob charJob = charJob.wizzard;
     public skillMoveType skillMoveType;
-    public targetFilterType detecttype = targetFilterType.allInArea;
+    public targetFilterType detecttype = targetFilterType.allObj;
     public triggerType triggerType = triggerType.whenHitEnemy;
 
     public string CardDescription
     {
         get
         {
-            string details = this.CardName + "\n" + this.CardType + '\n' + this.cardClass + "\n" + this.BaseDescription + "\n";
+            string details = this.CardName + "\n" + this.CardType + '\n' + this.charJob + "\n" + this.BaseDescription + "\n";
             foreach (Effect eff in this.cardEffect)
             {
                 details += eff.effect_detail + " ";
