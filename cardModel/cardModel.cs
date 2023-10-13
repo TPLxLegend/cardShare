@@ -32,7 +32,7 @@ public class cardModel : ScriptableObject
     public GameObject skillObj;
     public Effect[] cardEffect;
     public int timeStandby = 0;
-    public float processTime = 1;
+    public float duration = 1;
     public float speed = 1;
 
     #endregion
@@ -50,7 +50,7 @@ public class cardModel : ScriptableObject
         skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
 
         skillObjScript.source = tf.gameObject;
-        Destroy(InsSkillObj, processTime);
+        Destroy(InsSkillObj, duration);
 
         Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
         Dic.singleton.filter[detecttype].addFilterion(skillObjScript);

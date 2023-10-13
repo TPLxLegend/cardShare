@@ -24,10 +24,16 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
     {
         var players = skillObj.objInRange;
         var source = skillObj.source;
-        var mesh = skillObj.gameObject.GetComponent<MeshRenderer>();
-        mesh.enabled = false;
-        skillObj.gameObject.GetComponent<MeshCollider>().enabled = false;
-        skillObj.gameObject.GetComponent<SphereCollider>().enabled = false;
+        if (skillObj.gameObject.TryGetComponent(out MeshRenderer mesh))
+        {
+            mesh.enabled = false;
+        }
+        if(skillObj.gameObject.TryGetComponent(out MeshCollider meshCollider)){
+            meshCollider.enabled=false;
+        }
+        if(skillObj.gameObject.TryGetComponent(out SphereCollider sphereCollider)){
+            sphereCollider.enabled=false;
+        }
         Debug.Log("player Resolve:" + players.ToString() + " \nCount:" + players.Count);
         foreach (Effect effect in cardEffect)
         {

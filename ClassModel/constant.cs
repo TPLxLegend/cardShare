@@ -38,7 +38,8 @@ public enum cardTag{
     neft,
     curse,
     blessing,
-    elemental
+    elemental,
+    protect
 }
 public enum targetFilterType{
     allObj,

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public enum skillMoveType
 {
-    line, ziczac, trace, circle,tele
+    line, ziczac, trace, circle,tele,notMove
 }
 public partial class Dic
 {
@@ -13,7 +13,8 @@ public partial class Dic
         {skillMoveType.ziczac,ziczac.ins} ,
         {skillMoveType.trace,trace.ins},
         {skillMoveType.circle,circle.ins},
-        {skillMoveType.tele,tele.ins}
+        {skillMoveType.tele,tele.ins},
+        {skillMoveType.notMove,notMove.ins},
     };
 }
 
@@ -34,7 +35,11 @@ public interface SkillMoveType
         });
     }
 }
-
+public class notMove : SkillMoveType
+{
+    notMove(){}
+    public static notMove ins=new notMove();
+}
 public class line : SkillMoveType
 {
     line() { }

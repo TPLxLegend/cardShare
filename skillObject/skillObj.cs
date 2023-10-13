@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
+[RequireComponent(typeof(Rigidbody), typeof(NetworkObject), typeof(NetworkTransform))]
 public class skillObj:NetworkBehaviour
 {
     public List<GameObject> objInRange;
@@ -21,8 +22,8 @@ public class skillObj:NetworkBehaviour
     public void Trigger(GameObject t)
     {
         
-        var effHitObj = transform.Find("effectHit").gameObject;
-        effHitObj.SetActive(true);
+        var effHitObj = transform.Find("effectHit");
+        if(effHitObj) effHitObj.gameObject.SetActive(true);
         try
         {
             var T = (t.transform.position - transform.position).normalized;
