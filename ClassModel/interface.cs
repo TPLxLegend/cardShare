@@ -71,3 +71,12 @@ public struct DamageCalcJob : IJob
         HP[0] -= Dmg * (scaleDefense / (scaleDefense + defense));
     }
 }
+
+public interface IData{
+    public void save(){
+        
+    }
+    public object load(){
+        return default;
+    }
+}

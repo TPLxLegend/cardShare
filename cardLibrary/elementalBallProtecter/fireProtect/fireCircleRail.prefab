@@ -38,7 +38,7 @@ Transform:
   - {fileID: 2756210176218731808}
   - {fileID: 3059884430255451763}
   - {fileID: 4015345945264742730}
-  - {fileID: 1220595964499781276}
+  - {fileID: 5361192025240562326}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7098096058064138669
@@ -53,9 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67eb2ab41f9d4cf449cf700ff07b0639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spline: {fileID: 7544707682127014215}
-  childObjects: []
-  speed: 1
+  splineContainer: {fileID: 7726383689088264755}
 --- !u!54 &3029180177958907412
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -79,9 +77,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!135 &4359608300594658354
 SphereCollider:
@@ -186,7 +184,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!1 &2274074469628360695
+--- !u!1 &7809063461152679119
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,37 +192,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1220595964499781276}
-  - component: {fileID: 7544707682127014215}
+  - component: {fileID: 5361192025240562326}
+  - component: {fileID: 7726383689088264755}
   m_Layer: 0
-  m_Name: circle
+  m_Name: Spline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1220595964499781276
+--- !u!4 &5361192025240562326
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2274074469628360695}
+  m_GameObject: {fileID: 7809063461152679119}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5525356691362433317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7544707682127014215
+--- !u!114 &7726383689088264755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2274074469628360695}
+  m_GameObject: {fileID: 7809063461152679119}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}

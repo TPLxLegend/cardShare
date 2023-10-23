@@ -63,7 +63,7 @@ public class enemyFilter:targetFilter{
         if (go.TryGetComponent(out characterInfo player))
         {
             Debug.Log("detected:" + player);
-            return (player.teamID!=playerController.Instance.playerInfo.teamID);
+            return (player.teamID!= PlayerController.Instance.playerInfo.teamID);
         }
         return false;
     }
@@ -75,9 +75,9 @@ public class allyFilter:targetFilter{
     {
         if (go.TryGetComponent(out characterInfo player))
         {
-            if(player==playerController.Instance.playerInfo) return false;
+            if(player==PlayerController.Instance.playerInfo) return false;
             Debug.Log("detected:" + player);
-            return player.teamID==playerController.Instance.playerInfo.teamID;
+            return player.teamID==PlayerController.Instance.playerInfo.teamID;  
         }
         return false;
     }
@@ -90,7 +90,7 @@ public class seftFilter:targetFilter{
     {
         if (go.TryGetComponent(out characterInfo player))
         {
-            if(player==playerController.Instance.playerInfo) return true;
+            if(player==PlayerController.Instance.playerInfo) return true;
        
         }
         return false;

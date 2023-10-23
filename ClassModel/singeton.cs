@@ -1,10 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
 
-/*
-	- Persistent -> when we need to make sure the object is not destroyed during the session
-*/
-
 public class Singleton<T> : MonoBehaviour where T : Component
 {
     public static T Instance { get; private set; }
