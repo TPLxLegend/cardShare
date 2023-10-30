@@ -12,8 +12,13 @@ public class showUpAni : MonoBehaviour
         
     }
     void OnEnable(){
-        mat = GetComponent<MeshRenderer>().material;
+        try{
+            mat = GetComponent<MeshRenderer>().material;
         Run();
+        }catch{
+            Debug.Log("show up error: mat is null??????");
+        }
+        
     }
     public void Run(){
         StartCoroutine(changeValue());

@@ -9,9 +9,10 @@ public enum DmgType{
 }
 public enum typeTarget
 {
-    seft,
-    enemys,
-    allys
+    quickSeft,
+    quickEnemy,
+    onCenterScreen,
+    
 }
 public enum charJob
 {

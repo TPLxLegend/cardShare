@@ -55,4 +55,9 @@ public partial class Dic
         {triggerType.whenHitSeft,WhenHitSeft.ins},
         {triggerType.inArea,InArea.ins}
     };
+    public Dictionary<typeTarget,targetMethod> targetMethod = new Dictionary<typeTarget, targetMethod>(){
+        {typeTarget.onCenterScreen,centerOfScreen.ins},
+        {typeTarget.quickSeft,quickSeft.ins}
+        
+    };
 }

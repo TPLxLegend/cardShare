@@ -6,58 +6,36 @@ using UnityEngine.Splines;
 
 public class rail : MonoBehaviour
 {
-    public SplineContainer spline;
-    public float speed = 1f;
-    private float[] t;
-
+    public SplineContainer splineContainer; 
+    private float[] t; 
+    Transform[] children; 
     void Start()
     {
-        t = new float[transform.childCount - 1];
-
+        int childCount = transform.childCount-1;
+        t = new float[childCount];
+        children=new Transform[childCount];
+        for (int i = 0; i < childCount; i++)
+        {
+            t[i] = (float)i / childCount;
+            children[i]=transform.GetChild(i);
+        }
+        
     }
+
     void Update()
     {
-        NativeArray<float> nativeT = new NativeArray<float>(t, Allocator.TempJob);
-        NativeArray<float3> positions = new NativeArray<float3>(t.Length, Allocator.TempJob);
-
-        MoveJob job = new MoveJob
+        
+        for (int i = 0; i < children.Length; i++)
         {
-            speed = this.speed,
-            spline = this.spline.Spline,
-            t = nativeT,
-            positions = positions
-        };
-        JobHandle handle = job.Schedule(t.Length, 64);
-        handle.Complete();
+            float3 position;
+            position=splineContainer.EvaluatePosition(t[i]);
 
-        nativeT.CopyTo(t);
+            children[i].position = new Vector3(position.x, position.y, position.z);
 
-        for (int i = 0; i < t.Length; i++)
-        {
-            transform.GetChild(i).position = positions[i];
+
+            t[i] += Time.deltaTime * 0.1f;
+            if (t[i] >= 1.0f)
+                t[i] -= 1.0f;
         }
-
-        nativeT.Dispose();
-        positions.Dispose();
-    }
-}
-
-struct MoveJob : IJobParallelFor
-{
-    public float speed;
-    public Spline spline;
-    public NativeArray<float> t;
-    public NativeArray<float3> positions;
-
-    public void Execute(int index)
-    {
-        t[index] += Time.deltaTime * speed;
-
-        if (t[index] > 1f)
-        {
-            t[index] -= 1f;
-        }
-
-        positions[index] = spline.EvaluatePosition(t[index]);
     }
 }

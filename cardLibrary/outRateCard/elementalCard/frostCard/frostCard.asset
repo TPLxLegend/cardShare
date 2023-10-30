@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
+  m_Name: frostCard
+  m_EditorClassIdentifier: 
+  CardName: "L\xE1 b\xE0i b\u0103ng gi\xE1"
+  cardTag: 000000000500000002000000
+  CardType: 2
+  charJob: 0
+  skillMoveType: 0
+  detecttype: 0
+  triggerType: 1
+  BaseDescription: 
+  icon: {fileID: 0}
+  Count: 1
+  maxCount: 3
+  cooldown: 1
+  skillObj: {fileID: 4048387581951239484, guid: dca74ac1f9ce0f645acce3f7fb1f0b97,
+    type: 3}
+  cardEffect:
+  - {fileID: 11400000, guid: dd8925d728050c643b6bcb9d73a0f583, type: 2}
+  timeStandby: 0
+  processTime: 5
+  speed: 5

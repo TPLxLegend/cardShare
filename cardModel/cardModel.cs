@@ -1,14 +1,31 @@
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "card")]
 public class cardModel : ScriptableObject
 {
-    #region properties
+    #region state
+    [Header("------------------State---------------------------")]
     public string CardName;
     public cardTag[] cardTag;
     public cardType CardType = cardType.spell;
     public charJob charJob = charJob.wizzard;
-    public skillMoveType skillMoveType;
+    public Effect[] cardEffect;
+    public byte manaCost = 0;
+    public int timeStandby = 0;
+    public byte cooldown = 1;
+    public float duration = 1;
+    public float speed = 1;
+    public Sprite icon;
+    public byte num;
+    public byte maxCount = 3;
+    #endregion
+    #region  references
+    [Header("------------------Ref---------------------------")]
+
+    public conditionTrigger[] conditions;
+    public skillMoveType skillMoveType = skillMoveType.notMove;
+    public typeTarget targetMethod = typeTarget.quickSeft;
     public targetFilterType detecttype = targetFilterType.allObj;
     public triggerType triggerType = triggerType.whenHitEnemy;
 
@@ -25,20 +42,12 @@ public class cardModel : ScriptableObject
         }
     }
     [SerializeField] string BaseDescription;
-    public Sprite icon;
-    public int Count = 1;
-    public int maxCount = 3;
-    public float cooldown = 3;
-    public GameObject skillObj;
-    public Effect[] cardEffect;
-    public int timeStandby = 0;
-    public float duration = 1;
-    public float speed = 1;
 
+    public GameObject skillObj;
     #endregion
 
     #region methods
-    public virtual void effect(Transform tf, Vector3 targetPosition) // lam sao cho cac vi du: target = enemys, allys, seft 
+    public void effect(Transform tf, Vector3 targetPosition)
     {
         Vector3 position = tf.position;
         Quaternion rot = Quaternion.identity;
@@ -56,27 +65,91 @@ public class cardModel : ScriptableObject
         Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
         Dic.singleton.trigger[triggerType].addTrigger(skillObjScript, cardEffect);
     }
+    public virtual bool effect()
+    {
+        //xet dieu kien kich hoat
+        if (PlayerController.Instance.playerInfo.mp > manaCost)
+        {
+            PlayerController.Instance.playerInfo.mp -= manaCost;
+        }
+        if (conditions.Length > 0)
+        {
+            foreach (var condition in conditions)
+            {
+                if (!condition.checkCondittion())
+                {
+                    return false;
+                }
+            }
+        }
+        //
+        Transform tf = PlayerController.Instance.player.transform;
+        Vector3 position = tf.position;
+        Quaternion rot;
+
+        Vector3 targetPosition = Dic.singleton.targetMethod[targetMethod].target();
+
+        Vector3 dir = (targetPosition - tf.position).normalized * skillObj.GetComponent<SphereCollider>().radius;
+        position += 0.1f * dir;
+        rot = Quaternion.LookRotation(dir);
+
+        GameObject InsSkillObj = Instantiate(skillObj, position, rot);
+        skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
+
+        skillObjScript.source = tf.gameObject;
+        Destroy(InsSkillObj, duration);
+
+        Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
+        Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
+        Dic.singleton.trigger[triggerType].addTrigger(skillObjScript, cardEffect);
+        return true;
+    }
     #region count
     public bool addCard(int num)
     {
-        if (num + Count > maxCount)
+        try
         {
-            Count = maxCount;
+            if (num + this.num > maxCount)
+            {
+                num = (byte)(maxCount - this.num);
+            }
+            if (num < 0)
+            {
+                num = 0;
+            }
+            Debug.Log(num);
+            this.num += (byte)num;
+            return true;
+        }
+        catch
+        {
             return false;
         }
-        Count += num;
-        return true;
+
     }
 
     public bool removeCard(int num)
     {
-        if (Count - num < 0)
+        try
         {
-            Count = 0;
+            if (this.num - num < 0)
+            {
+                num = this.num;
+            }
+            if (num < 0)
+            {
+                num = 0;
+            }
+            Debug.Log(num);
+
+            this.num -= (byte)num;
+            return true;
+        }
+        catch
+        {
             return false;
         }
-        Count -= num;
-        return true;
+
     }
     #endregion
 
