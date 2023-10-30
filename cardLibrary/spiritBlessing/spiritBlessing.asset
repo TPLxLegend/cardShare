@@ -13,14 +13,22 @@ MonoBehaviour:
   m_Name: spiritBlessing
   m_EditorClassIdentifier: 
   CardName: 
-  CardType: 0
-  charJob: 0
-  icon: {fileID: 0}
-  Count: 1
-  maxCount: 3
-  cooldown: 3
-  skillObj: {fileID: 0}
+  cardTag: 
+  CardType: 2
+  charJob: 6
   cardEffect:
   - {fileID: 11400000, guid: 725dbb656caafc74e95336456dfb315c, type: 2}
   - {fileID: 11400000, guid: 03775e97812e3e847a15bcccb5109435, type: 2}
-  processTime: 10
+  manaCost: 0
+  timeStandby: 0
+  duration: 1
+  speed: 1
+  icon: {fileID: 0}
+  num: 0
+  maxCount: 3
+  skillMoveType: 0
+  targetMethod: 0
+  detecttype: 0
+  triggerType: 2
+  BaseDescription: 
+  skillObj: {fileID: 0}

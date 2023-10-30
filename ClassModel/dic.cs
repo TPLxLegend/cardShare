@@ -40,6 +40,7 @@ public partial class Dic
         {typeof(negate),"Vô hiệu"}
     };
     }
+
     public Dictionary<targetFilterType, targetFilter> filter = new Dictionary<targetFilterType, targetFilter>(){
         {targetFilterType.allObj,playerFilter.ins},
         {targetFilterType.enemy,enemyFilter.ins},
@@ -54,5 +55,10 @@ public partial class Dic
         {triggerType.whenHitAlly,WhenHitTeammate.ins},
         {triggerType.whenHitSeft,WhenHitSeft.ins},
         {triggerType.inArea,InArea.ins}
+    };
+    public Dictionary<typeTarget,targetMethod> targetMethod = new Dictionary<typeTarget, targetMethod>(){
+        {typeTarget.onCenterScreen,centerOfScreen.ins},
+        {typeTarget.quickSeft,quickSeft.ins}
+        
     };
 }
