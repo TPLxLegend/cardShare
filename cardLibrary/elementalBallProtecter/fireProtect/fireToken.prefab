@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3224764547684999825}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.259365, y: 23.500004, z: 20.331474}
+  m_LocalPosition: {x: -53.733, y: -52.62753, z: 0.88891983}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41,7 +41,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3224764547684999825}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 50bf3c8b96ca3d1498bc3f85796787f0, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 83cfecfdb2166ec0ea7fc266dca088aa, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -68,7 +68,10 @@ VisualEffect:
     m_Gradient:
       m_Array: []
     m_NamedObject:
-      m_Array: []
+      m_Array:
+      - m_Value: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+        m_Name: mesh
+        m_Overridden: 1
     m_Bool:
       m_Array: []
 --- !u!73398921 &1814538387336445306

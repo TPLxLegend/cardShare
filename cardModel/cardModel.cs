@@ -13,6 +13,8 @@ public class cardModel : ScriptableObject
     public Effect[] cardEffect;
     public byte manaCost = 0;
     public int timeStandby = 0;
+
+    public byte cooldown = 1;
     public float duration = 1;
     public float speed = 1;
     public Sprite icon;
@@ -22,7 +24,7 @@ public class cardModel : ScriptableObject
     #region  references
     [Header("------------------Ref---------------------------")]
 
-    public conditionTrigger condition;
+    public conditionTrigger[] conditions;
     public skillMoveType skillMoveType = skillMoveType.notMove;
     public typeTarget targetMethod = typeTarget.quickSeft;
     public targetFilterType detecttype = targetFilterType.allObj;
@@ -66,14 +68,25 @@ public class cardModel : ScriptableObject
     }
     public virtual bool effect()
     {
+        //xet dieu kien kich hoat
+        if (PlayerController.Instance.playerInfo.mp > manaCost)
+        {
+            PlayerController.Instance.playerInfo.mp -= manaCost;
+        }
+        if (conditions.Length > 0)
+        {
+            foreach (var condition in conditions)
+            {
+                if (!condition.checkCondittion())
+                {
+                    return false;
+                }
+            }
+        }
+        //
         Transform tf = PlayerController.Instance.player.transform;
         Vector3 position = tf.position;
-        Quaternion rot = Quaternion.identity;
-
-        if (condition)
-        {
-            if (!condition.checkCondittion()) return false;
-        }
+        Quaternion rot;
 
         Vector3 targetPosition = Dic.singleton.targetMethod[targetMethod].target();
 

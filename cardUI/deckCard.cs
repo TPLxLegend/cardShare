@@ -1,23 +1,28 @@
 
 using System.Collections.Generic;
-using System.IO;
-using Unity.Netcode;
+
+using System.Linq;
 using UnityEngine;
 /// <summary>
-/// quản lý cardModel và Gameobject UI của chúng như 1 pooling 
+/// quản lý cardModel thay cho card repository và Gameobject UI của chúng như 1 pooling 
 /// </summary>
 public class deckCard : Singleton<deckCard>
 {
     [Header("------------Ref------------")]
     [SerializeField] List<cardModel> cards;
-    List<cardModel> cardInHand;
+
+    public List<cardModel> cardInHand; //public for effect that need ref
     [SerializeField] GameObject cardUI;
+    [SerializeField] GameObject cardBar;
+
+    [SerializeField] cardModel brick;
     [SerializeField] List<GameObject> cardUIs;
     [Header("------------Data------------")]
     public byte index = 0;
     public byte handLimit = 5;
-    public int sizeDeck { get => cards.Count; }
 
+    [SerializeField] byte minDeckSize = 10;
+    public int sizeDeck { get => cards.Count; }
 
     #region for user to Custom their desk
     public bool addCard(cardModel card, byte num)
@@ -48,31 +53,31 @@ public class deckCard : Singleton<deckCard>
         {
             card.removeCard(1);
             cards.Remove(card);
+
+
+        }
+        //truong hop loai bo khien cards xuong duoi min se tu dong bo sung brick card
+        if (cards.Count < minDeckSize)
+        {
+            addCard(brick, (byte)(minDeckSize - cards.Count));
         }
         return true;
     }
     #endregion
+
+    #region card operator
     public cardModel getCard(int index)
     {
         return cards[index];
     }
-    void loadCard()
-    {
-        Debug.Log("start of deck card");
-        cardInHand = new List<cardModel>();
-        shuffle();
-        Debug.Log("-------after shuffer------------");
-        cardInHand = drawCard(handLimit);
-        Debug.Log(cardInHand.Count);
-    }
+
+
     public void shuffle()
     {
         for (int i = index; i < cards.Count; i++)
         {
-            int index = UnityEngine.Random.Range(0, cards.Count);
-            cardModel temp = cards[i];
-            cards[i] = cards[index];
-            cards[index] = temp;
+            int index = Random.Range(i, cards.Count);
+            (cards[index], cards[i], cardUIs[index], cardUIs[i]) = (cards[i], cards[index], cardUIs[i], cardUIs[index]);
         }
     }
 
@@ -87,25 +92,60 @@ public class deckCard : Singleton<deckCard>
         }
         cardModel card = cards[index];
         Debug.Log("draw a card:" + card.cardEffect);
-        GameObject cardInsUI = Instantiate(cardUI, gameObject.transform);
-        cardUIs.Add(cardInsUI);
-        cardInsUI.GetComponent<card>().setCardModel(card);
+
+
+        spawnCard(card);
 
         index++;
         return card;
     }
+
     public List<cardModel> drawCard(int num)
     {
-        List<cardModel> res = new List<cardModel>();
         for (int i = 0; i < num; i++)
         {
             var card = drawCard();
-            res.Add(card);
+            cardInHand.Add(card);
         }
-        return res;
+        return cardInHand;
+    }
+    #endregion
+    #region operator on UI 
+    void loadCard()
+    {
+        Debug.Log("start of deck card");
+        cardInHand = new List<cardModel>();
+        shuffle();
+        Debug.Log("-------after shuffer------------");
+        drawCard(handLimit);
+        Debug.Log(cardInHand.Count);
+    }
+    void spawnCard(cardModel card)
+    {
+        var res = cardUIs.FirstOrDefault(go =>
+        {
+            return (go.GetComponent<card>()?.cardModel == card) && (!go.activeSelf);
+        });
+        if (res != default)
+        {
+            GameObject cardInsUI = Instantiate(cardUI, cardBar.transform);
+            cardUIs.Add(cardInsUI);
+            cardInsUI.GetComponent<card>().initFromCardModel(card);
+            return;
+        }
+        res.SetActive(true);
     }
 
+    #endregion
     #region  mono
+    private void OnEnable()
+    {
+
+    }
+    private void OnDisable()
+    {
+
+    }
     void Start()
     {
         loadCard();

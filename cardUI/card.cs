@@ -1,14 +1,12 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class card : MonoBehaviour
 {
-    cardModel cardModel;
+    public cardModel cardModel;
 
-    public TMP_Text manaCostValueUI;
-    bool focus;
-    public void setCardModel(cardModel cardModel)
+    [SerializeField] GameObject couterClock;
+    public TMPro.TMP_Text manaCostValueUI;
+    public void initFromCardModel(cardModel cardModel)
     {
         this.cardModel = cardModel;
         //GetComponentInChildren<TMP_Text>().text = cardModel.name;
@@ -24,9 +22,22 @@ public class card : MonoBehaviour
         bool haveTrigger = cardModel.effect();
         if (!haveTrigger) return;
 
-
-
+        StartCoroutine(waitForReDraw(cardModel.cooldown));
         Debug.Log("click");
+    }
+    System.Collections.IEnumerator waitForReDraw(float time)
+    {
+        couterClock.SetActive(true);
+        var coutUI = couterClock.GetComponentInChildren<TMPro.TMP_Text>();
+        for (float i = time; i > 0; i -= Time.deltaTime)
+        {
+            coutUI.text = i.ToString("F2");
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        //coutUI.text = time.ToString();
+        gameObject.SetActive(false);
+        deckCard.Instance.drawCard(1);
     }
     void hold()
     {

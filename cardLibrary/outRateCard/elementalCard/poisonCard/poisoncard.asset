@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
-  m_Name: electriicCard
+  m_Name: poisoncard
   m_EditorClassIdentifier: 
   CardName: "L\xE1 b\xE0i \u0111\u1ED9c t\u1ED1"
   cardTag: 000000000300000005000000

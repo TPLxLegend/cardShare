@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class conditionTrigger:ScriptableObject
+public class conditionTrigger : ScriptableObject
 {
-    public virtual bool checkCondittion(){
+    public string describe = "";
+
+    public virtual bool checkCondittion()
+    {
         return true;
     }
 }

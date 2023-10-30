@@ -16,7 +16,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
             Destroy(gameObject);
         }
     }
-    public virtual void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (Instance != null)
         {

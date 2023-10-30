@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6d21bc92acb3f44bfad70053160a4d, type: 3}
+  m_Name: newbiePack
+  m_EditorClassIdentifier: 
+  namePack: goi bai co ban
+  notes: 'co the nhan cac la bai co ban da dung '
+  timeRemain: 
+  cards:
+  - {fileID: 11400000, guid: 35886301369916746a131d8c33386acb, type: 2}
+  - {fileID: 11400000, guid: 7022912305a8b6c4691a6398522fb363, type: 2}
+  - {fileID: 11400000, guid: 92a10a29b780b7b4a92bad7bb6f432d1, type: 2}
+  - {fileID: 11400000, guid: c0c150fd0a9b5cc459d8b827a4df6356, type: 2}
+  rates: 14141414
+  outOfRateCard: {fileID: 0}
+  illustration: {fileID: 0}
