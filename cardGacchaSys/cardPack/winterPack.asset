@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68cb0f36e502d04b9dfc4418a61461f, type: 3}
+  m_Name: winterPack
+  m_EditorClassIdentifier: 
+  namePack: 'goi bai mua dong '
+  notes: 
+  timeRemain: ~31/12/2023
+  cards: []
+  rates: 
+  outOfRateCard: {fileID: 0}
+  illustration: {fileID: 21300000, guid: c154d2b63ada62d769d1562d5368e5bf, type: 3}

@@ -41,8 +41,15 @@ public class deckCard : Singleton<deckCard>
             card.addCard(1);
             cards.Add(card);
         }
-
-
+        return true;
+    }
+    public bool addCard(List<cardModel> listAdd)
+    {
+        for (int i = 0; i < listAdd.Count; i++)
+        {
+            cards.Add(listAdd[i]);
+            Debug.Log("Card have been added to deck:" + listAdd[i].CardName);
+        }
         return true;
     }
     public bool removeCard(cardModel card, int num)
@@ -53,8 +60,6 @@ public class deckCard : Singleton<deckCard>
         {
             card.removeCard(1);
             cards.Remove(card);
-
-
         }
         //truong hop loai bo khien cards xuong duoi min se tu dong bo sung brick card
         if (cards.Count < minDeckSize)
@@ -140,6 +145,11 @@ public class deckCard : Singleton<deckCard>
     #region  mono
     private void OnEnable()
     {
+        var data = deckData.Load();
+        if (data != null)
+        {
+            cards = data.cards;
+        }
 
     }
     private void OnDisable()
@@ -158,13 +168,13 @@ public class deckCard : Singleton<deckCard>
 class deckData : IData
 {
     public List<cardModel> cards;
-    public void Save(string filepath)
+    public void Save()
     {
         saveload save = new saveload();
         save.save("deckData", this);
     }
 
-    public deckData Load(string filepath)
+    public static deckData Load()
     {
         saveload load = new saveload();
         return load.load<deckData>("deckData");

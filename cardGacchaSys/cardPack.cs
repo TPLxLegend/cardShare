@@ -18,14 +18,22 @@ public class cardPack : ScriptableObject
         return (cards[id], rates[id]);
     }
 
-
+    //co bug ??
     public void copyTo(gacchaSystem<cardModel> gaccha)
     {
+        if (gaccha == null)
+        {
+            throw new System.ArgumentNullException(nameof(gaccha), "The gaccha object cannot be null.");
+        }
+        if (rates.Count == 0) { Debug.Log("rate not have value"); return; }
+
+
         List<cardModel> res = new List<cardModel>();
         for (int i = 0; i < rates.Count; i++)
         {
             for (int j = 0; j < rates[i]; j++)
             {
+                Debug.Log("card n:" + j);
                 res.Add(cards[i]);
             }
         }
