@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d6d21bc92acb3f44bfad70053160a4d, type: 3}
+  m_Script: {fileID: 11500000, guid: a68cb0f36e502d04b9dfc4418a61461f, type: 3}
   m_Name: magicianPack
   m_EditorClassIdentifier: 
-  namePack: goi bai phap thuat
-  notes: 'goi bai chuyen cho phap su '
-  timeRemain: 
+  namePack: 'goi bai phap thuat '
+  notes: sen bang, vong lua bao vay, vong tron guom anh sang
+  timeRemain: vinh vien
   cards:
-  - {fileID: 11400000, guid: 718d0a5e4786e0218af24871b4ad6d49, type: 2}
-  - {fileID: 11400000, guid: c620eab178410cc4880496d1fec51c04, type: 2}
   - {fileID: 11400000, guid: 08213f2818cbd85459bb5b8bd9970d49, type: 2}
-  rates: 0a3c1e
-  outOfRateCard: {fileID: 0}
-  illustration: {fileID: 0}
+  - {fileID: 11400000, guid: 269f1eef3f3d8f74f8aacd3d22571703, type: 2}
+  - {fileID: 11400000, guid: d57aa6d4d70893740abed7825f821f17, type: 2}
+  rates: 140109
+  outOfRateCard: {fileID: 11400000, guid: c620eab178410cc4880496d1fec51c04, type: 2}
+  illustration: {fileID: 21300000, guid: 0d5c3d3046f1c840cacd585a17f80d6a, type: 3}

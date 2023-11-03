@@ -146,10 +146,10 @@ TextureImporter:
       name: batchingcardIcon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
+        x: 44
+        y: 805
+        width: 258
+        height: 258
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,10 +163,325 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_1
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 801
+        width: 242
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3be104f0192c73fe39c6516b540d609c
+      internalID: 1161986300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_2
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 792
+        width: 247
+        height: 246
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05afcb6cc5b8ec7928c12aa8b2179d57
+      internalID: -1461837075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_3
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 804
+        width: 246
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abb66945f1e91e7bda0cf3d288cb1d39
+      internalID: 1212035292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_4
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 544
+        width: 246
+        height: 246
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3feddf47517a75fcab82abc1992e1920
+      internalID: -2029323399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_5
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 531
+        width: 246
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7ea108946ddc1ae5a1c82723fa602aa
+      internalID: -684258112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_6
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 520
+        width: 245
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79357cf36fe5c333d949872539b16abf
+      internalID: -109941945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_7
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 511
+        width: 243
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b94b8fefc5e82ef21892aa9b427cb127
+      internalID: -2138150198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_8
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 287
+        width: 251
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 099fc794d8e07d277b3cdda9f6513563
+      internalID: -127278631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_9
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 279
+        width: 243
+        height: 243
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4add489eac042256afb29626be24c88
+      internalID: 1697122762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_10
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 260
+        width: 252
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85a1dae7f582e9c05afc44fb5e7fc561
+      internalID: 627341987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_11
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 259
+        width: 248
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca05530052c541df58990b469e9a2a59
+      internalID: 2099251753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_12
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 24
+        width: 252
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cb38bf376db210619a7880888665e00
+      internalID: 1682691359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_13
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 24
+        width: 244
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6633d7efb40517b068ffee8c5f11413e
+      internalID: 1092650894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_14
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 3
+        width: 245
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f8e5e4fd2d07957698dc3acd13e4e98
+      internalID: 1439818196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batchingcardIcon_15
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 0
+        width: 246
+        height: 246
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba82d9250b9beaf9bbe3e73b24fdc2d1
+      internalID: 1538302282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 8ca6df56b4e90fd11be8191fa78eab6c
     internalID: 0
     vertices: []
     indices: 
@@ -175,6 +490,21 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       batchingcardIcon_0: 3366894241265699253
+      batchingcardIcon_1: 1161986300
+      batchingcardIcon_10: 627341987
+      batchingcardIcon_11: 2099251753
+      batchingcardIcon_12: 1682691359
+      batchingcardIcon_13: 1092650894
+      batchingcardIcon_14: 1439818196
+      batchingcardIcon_15: 1538302282
+      batchingcardIcon_2: -1461837075
+      batchingcardIcon_3: 1212035292
+      batchingcardIcon_4: -2029323399
+      batchingcardIcon_5: -684258112
+      batchingcardIcon_6: -109941945
+      batchingcardIcon_7: -2138150198
+      batchingcardIcon_8: -127278631
+      batchingcardIcon_9: 1697122762
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
