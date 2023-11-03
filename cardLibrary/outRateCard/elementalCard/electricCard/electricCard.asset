@@ -16,19 +16,22 @@ MonoBehaviour:
   cardTag: 
   CardType: 2
   charJob: 0
-  skillMoveType: 0
-  detecttype: 1
-  triggerType: 2
-  BaseDescription: 
-  icon: {fileID: 0}
-  Count: 1
-  maxCount: 3
-  cooldown: 3
-  skillObj: {fileID: 4048387581951239484, guid: 4b6b3a64eb8b3024281d90092e3eb879,
-    type: 3}
   cardEffect:
   - {fileID: 11400000, guid: 6527c62572a1a8b428f84f4f30e2a25f, type: 2}
   - {fileID: 11400000, guid: 83648a59c8f3c8a42baf7daec32d1a3f, type: 2}
+  manaCost: 0
   timeStandby: 0
-  processTime: 5
+  cooldown: 3
+  duration: 1
   speed: 3
+  icon: {fileID: -127278631, guid: 237d4925987b858a683add4580f5e02c, type: 3}
+  num: 0
+  maxCount: 3
+  conditions: []
+  skillMoveType: 0
+  targetMethod: 0
+  detecttype: 1
+  triggerType: 2
+  BaseDescription: 
+  skillObj: {fileID: 4048387581951239484, guid: 4b6b3a64eb8b3024281d90092e3eb879,
+    type: 3}
