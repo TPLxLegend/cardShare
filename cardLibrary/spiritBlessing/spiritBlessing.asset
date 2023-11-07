@@ -21,11 +21,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 03775e97812e3e847a15bcccb5109435, type: 2}
   manaCost: 0
   timeStandby: 0
+  cooldown: 1
   duration: 1
   speed: 1
   icon: {fileID: 0}
   num: 0
   maxCount: 3
+  conditions: []
   skillMoveType: 0
   targetMethod: 0
   detecttype: 0

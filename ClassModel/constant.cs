@@ -1,4 +1,6 @@
-public enum DmgType{
+#region character&skill
+public enum DmgType
+{
     Physic,
     Fire,
     Ice,
@@ -6,13 +8,6 @@ public enum DmgType{
     Poison,
     Dark,
     Light,
-}
-public enum typeTarget
-{
-    quickSeft,
-    quickEnemy,
-    onCenterScreen,
-    
 }
 public enum charJob
 {
@@ -27,13 +22,23 @@ public enum charJob
     swordman,
     archer
 }
+public enum typeTarget
+{
+    quickSeft,
+    quickEnemy,
+    onCenterScreen,
+
+}
+#endregion
+#region card
 public enum cardType
 {
     attack,
     trap,
     spell,
 }
-public enum cardTag{
+public enum cardTag
+{
     attack,
     buff,
     neft,
@@ -42,14 +47,16 @@ public enum cardTag{
     elemental,
     protect
 }
-public enum targetFilterType{
+public enum targetFilterType
+{
     allObj,
     player,
     enemy,
     ally,
     seft
 }
-public enum triggerType{
+public enum triggerType
+{
     whenHitSomething,
     whenHitPlayer,
     whenHitEnemy,
@@ -57,3 +64,14 @@ public enum triggerType{
     whenHitSeft,
     inArea
 }
+#endregion
+#region enemy
+public enum enemyLevelSpecial : byte
+{
+    normal = 1,
+    elite = 3,
+    chaos = 10,
+}
+#endregion
+
+
