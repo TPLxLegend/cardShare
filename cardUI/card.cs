@@ -36,8 +36,7 @@ public class card : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
         //coutUI.text = time.ToString();
-        gameObject.SetActive(false);
-        deckCard.Instance.drawCard(1);
+        deckCard.Instance.returnCard(cardModel);
     }
     void hold()
     {

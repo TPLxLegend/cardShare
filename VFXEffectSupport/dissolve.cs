@@ -5,25 +5,28 @@ public class dissolve : MonoBehaviour
 {
     [SerializeField] int duration;
     [SerializeField] float timeStep;
-    Material material;
-    void Start()
-    {
-        material = GetComponent<MeshRenderer>().material;
-    }
-    void Update()
-    {
-
-    }
+    [SerializeField] Material dissolveMaterial;
+    Material originMat;
     public void RunDisolve()
     {
         StartCoroutine(Disolve());
     }
-    public IEnumerator Disolve()
+    IEnumerator Disolve()
     {
+        var mesh = GetComponent<MeshRenderer>();
+        originMat = mesh.material;
+        mesh.material = dissolveMaterial;
+        Debug.Log("disolve mat:" + mesh.material);
+
         for (float i = 0; i < duration; i += timeStep)
         {
-            material.SetFloat("_dissolveValue",i);
+            Debug.Log("dissolve step=" + i);
+            dissolveMaterial.SetFloat("_dissolveValue", i);
             yield return new WaitForSeconds(timeStep);
         }
+        mesh.enabled = false;
+        mesh.material = originMat;
+        dissolveMaterial.SetFloat("_dissolveValue", 1);
+
     }
 }

@@ -81,6 +81,9 @@ public class characterInfo : NetworkBehaviour
             onDie.Invoke(this);
         }
     }
+    /// <summary>
+    /// xu ly khi die 
+    /// </summary>
 }
 
 [BurstCompile]
@@ -108,3 +111,7 @@ public interface IData
         return default;
     }
 }
+
+#region map
+
+#endregion

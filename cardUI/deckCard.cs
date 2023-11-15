@@ -114,6 +114,17 @@ public class deckCard : Singleton<deckCard>
         }
         return cardInHand;
     }
+    public void returnCard(int id)
+    {
+        var cardBeRemove = cardInHand[id];
+        returnCard(cardBeRemove);
+    }
+    public void returnCard(cardModel md)
+    {
+        despawnCard(md);
+        cardInHand.Remove(md);
+        drawCard(1);
+    }
     #endregion
     #region operator on UI 
     void loadCard()
@@ -131,7 +142,7 @@ public class deckCard : Singleton<deckCard>
         {
             return (go.GetComponent<card>()?.cardModel == card) && (!go.activeSelf);
         });
-        if (res != default)
+        if (res == default)
         {
             GameObject cardInsUI = Instantiate(cardUI, cardBar.transform);
             cardUIs.Add(cardInsUI);
@@ -139,6 +150,19 @@ public class deckCard : Singleton<deckCard>
             return;
         }
         res.SetActive(true);
+    }
+    void despawnCard(cardModel card)
+    {
+        var res = cardUIs.FirstOrDefault(go =>
+                {
+                    return (go.GetComponent<card>()?.cardModel == card) && go.activeSelf;
+                });
+        if (res == default)
+        {
+            Debug.Log("khong co bai nao de despawn");
+            return;
+        }
+        res.SetActive(false);
     }
 
     #endregion
