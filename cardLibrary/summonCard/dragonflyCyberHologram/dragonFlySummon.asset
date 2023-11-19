@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
+  m_Name: dragonFlySummon
+  m_EditorClassIdentifier: 
+  CardName: Trieu hoi chuon chuon
+  cardTag: 
+  CardType: 1
+  charJob: 0
+  cardEffect: []
+  manaCost: 1
+  timeStandby: 0
+  cooldown: 10
+  duration: 1
+  speed: 1
+  icon: {fileID: 0}
+  num: 0
+  maxCount: 3
+  conditions: []
+  skillMoveType: 5
+  targetMethod: 0
+  detecttype: 0
+  triggerType: 2
+  BaseDescription: 
+  skillObj: {fileID: 8408947808661050046, guid: 49d043cb8160d4e508744839ace98889,
+    type: 3}

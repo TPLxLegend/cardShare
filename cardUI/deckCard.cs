@@ -20,22 +20,28 @@ public class deckCard : Singleton<deckCard>
     [Header("------------Data------------")]
     public byte index = 0;
     public byte handLimit = 5;
-
+    public byte cardPointTranferWhenReachLimitNum = 100;
+    public int cardPoint = 0;
     [SerializeField] byte minDeckSize = 10;
     public int sizeDeck { get => cards.Count; }
 
-    #region for user to Custom their desk
+    #region for add or remove card to deck
     public bool addCard(cardModel card, byte num)
     {
+        int cardPointNum = 0;
         if (num + card.num > card.maxCount)
         {
             num = (byte)(card.maxCount - card.num);
-
+            cardPointNum = num + card.num - card.maxCount;
+            //xu li UI 
+            Debug.Log("card du se chuyen doi thanh diem x" + cardPointTranferWhenReachLimitNum);
+            cardPoint = cardPointNum * cardPointTranferWhenReachLimitNum;
         }
         else if (num < 0)
         {
             num = 0;
         }
+
         for (int i = 0; i < num; i++)
         {
             card.addCard(1);

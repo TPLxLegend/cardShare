@@ -112,6 +112,8 @@ public interface IData
     }
 }
 
-#region map
+public interface iEnemySPBehaviour
+{
+    public string detail { get => ""; }
 
-#endregion
+}

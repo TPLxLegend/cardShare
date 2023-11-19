@@ -11,7 +11,6 @@ public class cardPack : ScriptableObject
     /// rate is in % unit and it is integer
     /// </summary>
     public List<byte> rates;
-    public cardModel outOfRateCard;
     public Sprite illustration;
     public (cardModel, byte) getCardWithRate(int id)
     {
