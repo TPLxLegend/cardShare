@@ -81,9 +81,6 @@ public class characterInfo : NetworkBehaviour
             onDie.Invoke(this);
         }
     }
-    /// <summary>
-    /// xu ly khi die 
-    /// </summary>
 }
 
 [BurstCompile]
@@ -117,3 +114,4 @@ public interface iEnemySPBehaviour
     public string detail { get => ""; }
 
 }
+

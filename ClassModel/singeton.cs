@@ -26,7 +26,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 }
 public abstract class SingletonScriptableObject<T> : ScriptableObject where T : ScriptableObject
 {
-    
+
     protected static T Singleton = null;
     public static T singleton
     {
@@ -72,6 +72,7 @@ public class SingletonNetwork<T> : NetworkBehaviour where T : Component
             Destroy(gameObject);
         }
     }
+
 }
 
 public class SingletonNetworkPersistent<T> : NetworkBehaviour where T : Component
