@@ -6,7 +6,7 @@ using Unity.Jobs;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-
+[RequireComponent(typeof(NetworkObject))]
 public class characterInfo : NetworkBehaviour
 {
     public NetworkVariable<int> hp;
@@ -40,6 +40,7 @@ public class characterInfo : NetworkBehaviour
             scaleDefense = 100
         };
         JobHandle handle = dmgCalc.Schedule();
+        Debug.Log("testing player:" + this + " take dame:" + dmg);
         handle.Complete();
         hp.Value = dmgCalc.HP[0];
         Hp.Dispose();
@@ -49,7 +50,7 @@ public class characterInfo : NetworkBehaviour
 
     public virtual void addChain(Effect effect)
     {
-        Debug.Log("on chain listener count:" + (onChain.GetPersistentEventCount()));
+        Debug.Log("on chain listener count:" + onChain.GetPersistentEventCount());
         if (onChain.GetPersistentEventCount() != 0)
         {
             onChain.Invoke(this, effect);
@@ -112,6 +113,10 @@ public interface IData
 public interface iEnemySPBehaviour
 {
     public string detail { get => ""; }
+    public virtual void attackHandle()
+    {
+
+    }
 
 }
 

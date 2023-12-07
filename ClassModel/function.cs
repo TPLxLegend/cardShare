@@ -42,4 +42,10 @@ public class function
         }
         return res;
     }
+    public static void LookAtNegXAxis(Transform transform, Vector3 target)
+    {
+        Vector3 relativePos = target - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(new Vector3(-relativePos.x, 0, 0));
+        transform.rotation = rotation;
+    }
 }
