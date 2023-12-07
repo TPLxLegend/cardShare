@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class serverFunction : SingletonNetworkPersistent<serverFunction>
 {
+    public override void OnNetworkSpawn()
+    {
+       
+    }
     public GameObject playerPrefab { private get; set; }
     [ServerRpc(RequireOwnership = false)]
     public void spawnPlayerServerRpc(Vector3 pos, Quaternion rot)
@@ -11,6 +15,7 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
 
         if (newObject.TryGetComponent(out NetworkObject no))
         {
+            Debug.Log("Spawn player:"+newObject);
             no.Spawn();
         }
 
