@@ -5,9 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody), typeof(NetworkObject), typeof(NetworkTransform))]
-public class skillObj:NetworkBehaviour
+public class skillObj : NetworkBehaviour
 {
     public List<GameObject> objInRange;
+    /// <summary>
+    /// g1 is this, g2 is collide object
+    /// </summary>
     public UnityEvent<GameObject, GameObject> collisionEnter, triggerEnter, onDestroy, triggerExit, triggerStay;
     public UnityEvent<skillObj> onUpdate;
 
@@ -21,9 +24,9 @@ public class skillObj:NetworkBehaviour
     /// <param name="t"></param>
     public void Trigger(GameObject t)
     {
-        
+
         var effHitObj = transform.Find("effectHit");
-        if(effHitObj) effHitObj.gameObject.SetActive(true);
+        if (effHitObj) effHitObj.gameObject.SetActive(true);
         try
         {
             var T = (t.transform.position - transform.position).normalized;
