@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -5,19 +6,21 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
 {
     public override void OnNetworkSpawn()
     {
-       
+
     }
-    public GameObject playerPrefab { private get; set; }
+    [SerializeField] GameObject CameraPre;
+    [SerializeField] GameObject playerPrefab;
+
+    NetworkObject spawnedObj;
+
     [ServerRpc(RequireOwnership = false)]
     public void spawnPlayerServerRpc(Vector3 pos, Quaternion rot, ulong clientID)
     {
-        GameObject newObject = Instantiate(playerPrefab, pos, rot);
+        Debug.Log("pos when call rpc:   "+pos);
+        var newSpawned = Instantiate(playerPrefab,pos,rot);
+        spawnedObj=newSpawned.GetComponent<NetworkObject>();
+        spawnedObj.Spawn();
 
-        if (newObject.TryGetComponent(out NetworkObject no))
-        {
-            Debug.Log("Spawn player:"+newObject);
-            no.Spawn();
-        }
         ClientRpcParams clientRpcParams = new ClientRpcParams()
         {
             Send = new ClientRpcSendParams
@@ -25,9 +28,11 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
                 TargetClientIds = new ulong[] { clientID }
             }
         };
-        NetworkObjectReference netObjRef = new NetworkObjectReference(no);
+        NetworkObjectReference netObjRef = new NetworkObjectReference(spawnedObj);
         setPlayerClientRpc(netObjRef, clientID, clientRpcParams);
     }
+
+
     [ClientRpc]//(Delivery = RpcDelivery.Unreliable)
     public void setPlayerClientRpc(NetworkObjectReference networkObject, ulong clientId = 0, ClientRpcParams clientRpcParams = default)
     {
@@ -38,13 +43,23 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
             Debug.Log("server send a boardcard when use this clientRPC");
             return;
         }
+
         if (networkObject.TryGet(out NetworkObject networkObj))
         {
             PlayerController.Instance.player = networkObj.gameObject;
         }
-
-
+        var tf = networkObj.gameObject.transform;
+        Instantiate(CameraPre,tf.position,tf.rotation);
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void SpawnNetObjServerRpc( Vector3 pos, Quaternion rot, NetworkObjectReference gameobjectRef)
+    {
+        gameobjectRef.TryGet(out NetworkObject networkObj);
+        var go=Instantiate(networkObj.gameObject,pos,rot);
+        spawnedObj = go.GetComponent<NetworkObject>();
+        spawnedObj.Spawn();
+        
+    }
 
 }
