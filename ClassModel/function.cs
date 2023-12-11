@@ -45,7 +45,9 @@ public class function
     public static void LookAtNegXAxis(Transform transform, Vector3 target)
     {
         Vector3 relativePos = target - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(new Vector3(-relativePos.x, 0, 0));
+        Debug.Log("lookat: " + relativePos);
+        Quaternion rotation = Quaternion.LookRotation(new Vector3(relativePos.x, 0, 0));
+        Debug.Log("rotation: " + rotation);
         transform.rotation = rotation;
     }
 }

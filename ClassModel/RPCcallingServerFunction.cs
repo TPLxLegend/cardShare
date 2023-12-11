@@ -16,9 +16,9 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
     [ServerRpc(RequireOwnership = false)]
     public void spawnPlayerServerRpc(Vector3 pos, Quaternion rot, ulong clientID)
     {
-        Debug.Log("pos when call rpc:   "+pos);
-        var newSpawned = Instantiate(playerPrefab,pos,rot);
-        spawnedObj=newSpawned.GetComponent<NetworkObject>();
+        Debug.Log("pos when call rpc:   " + pos);
+        var newSpawned = Instantiate(playerPrefab, pos, rot);
+        spawnedObj = newSpawned.GetComponent<NetworkObject>();
         spawnedObj.Spawn();
 
         ClientRpcParams clientRpcParams = new ClientRpcParams()
@@ -49,17 +49,22 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
             PlayerController.Instance.player = networkObj.gameObject;
         }
         var tf = networkObj.gameObject.transform;
-        Instantiate(CameraPre,tf.position,tf.rotation);
+        Instantiate(CameraPre, tf.position, tf.rotation);
+
+        var controllRec = PlayerController.Instance.controllReceivingSystem = networkObj.gameObject.GetComponent<ControllReceivingSystem>();
+        controllRec.onCurCharacterChange.AddListener(PlayerController.Instance.loadPlayerInfo);
+        PlayerController.Instance.controller = controllRec.characterController;
+        PlayerController.Instance.loadPlayerInfo(controllRec.curCharacterControl);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnNetObjServerRpc( Vector3 pos, Quaternion rot, NetworkObjectReference gameobjectRef)
+    public void SpawnNetObjServerRpc(Vector3 pos, Quaternion rot, NetworkObjectReference gameobjectRef)
     {
         gameobjectRef.TryGet(out NetworkObject networkObj);
-        var go=Instantiate(networkObj.gameObject,pos,rot);
+        var go = Instantiate(networkObj.gameObject, pos, rot);
         spawnedObj = go.GetComponent<NetworkObject>();
         spawnedObj.Spawn();
-        
+
     }
 
 }
