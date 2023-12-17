@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class serverFunction : SingletonNetworkPersistent<serverFunction>
 {
-    public override void OnNetworkSpawn()
-    {
-
-    }
     [SerializeField] GameObject CameraPre;
     [SerializeField] GameObject playerPrefab;
 
@@ -16,9 +12,19 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
     public void spawnPlayerServerRpc(Vector3 pos, Quaternion rot, ulong clientID)
     {
         Debug.Log("pos when call rpc:   " + pos);
+        Debug.Log("who call it: " + clientID);
         var newSpawned = Instantiate(playerPrefab, pos, rot);
         spawnedObj = newSpawned.GetComponent<NetworkObject>();
-        spawnedObj.Spawn();
+        //var noChild=newSpawned.GetComponentsInChildren<NetworkObject>();
+
+        spawnedObj.SpawnWithOwnership(clientID);
+        //foreach (var child in noChild)
+        //{
+        //    child.SpawnWithOwnership(clientID);
+        //}
+
+       
+        Debug.Log(spawnedObj + " is own by client: " + spawnedObj.OwnerClientId);
 
         ClientRpcParams clientRpcParams = new ClientRpcParams()
         {
@@ -42,9 +48,11 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
             Debug.Log("server send a boardcard when use this clientRPC");
             return;
         }
+        
 
         if (networkObject.TryGet(out NetworkObject networkObj))
         {
+            Debug.Log(networkObj.gameObject+" have ownship by: "+networkObj.OwnerClientId);
             PlayerController.Instance.player = networkObj.gameObject;
         }
         var tf = networkObj.gameObject.transform;
