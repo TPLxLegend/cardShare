@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Rigidbody), typeof(NetworkObject), typeof(NetworkTransform))]
+[RequireComponent(typeof(Rigidbody), typeof(NetworkObject), typeof(clientNetworkTransform))]
 public class skillObj : NetworkBehaviour
 {
     public List<GameObject> objInRange;

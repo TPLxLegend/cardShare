@@ -27,7 +27,7 @@ public class characterInfo : NetworkBehaviour
     public byte speed;
     public List<Effect> chainEffect;
     public UnityEvent<characterInfo, Effect> onChain;
-    public UnityEvent<characterInfo> onSpawn, onDie;
+    public UnityEvent<characterInfo> onSpawn, onDie, onAttacked;
     public virtual void takeDamage(int dmg, DmgType dmgType)
     {
         NativeArray<int> Hp = new NativeArray<int>(1, Allocator.TempJob);
@@ -40,6 +40,7 @@ public class characterInfo : NetworkBehaviour
             scaleDefense = 100
         };
         JobHandle handle = dmgCalc.Schedule();
+        onAttacked.Invoke(this);
         Debug.Log("testing player:" + this + " take dame:" + dmg);
         handle.Complete();
         hp.Value = dmgCalc.HP[0];
@@ -61,6 +62,12 @@ public class characterInfo : NetworkBehaviour
             chainEffect.Add(effect);
         }
     }
+    public override void OnNetworkSpawn()
+    {
+        hp = new NetworkVariable<int>(maxHP, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    }
+
     protected virtual void OnEnable()
     {
         //xu li loading dau game

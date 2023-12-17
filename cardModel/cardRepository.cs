@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class cardRepository : MonoBehaviour
+public class cardRepository : Singleton<cardRepository>
 {
     public List<cardModel> cards;
-    
+
 }

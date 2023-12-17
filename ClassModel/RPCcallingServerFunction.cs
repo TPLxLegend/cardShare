@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -67,4 +66,17 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
 
     }
 
+
+    [ClientRpc]
+    public void InstantiateNetObjClientRpc(NetworkObjectReference networkObject, ulong clientId = 0, ClientRpcParams clientRpcParams = default)
+    {
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            Debug.Log("it call by itself:" + clientId);
+            return;
+        }
+        networkObject.TryGet(out NetworkObject networkObj);
+        var go = Instantiate(networkObj.gameObject);
+        //setSomethingForGO(go);
+    }
 }

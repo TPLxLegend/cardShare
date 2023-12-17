@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 using System.Linq;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.InputSystem;
 /// <summary>
 /// quản lý cardModel thay cho card repository và Gameobject UI của chúng như 1 pooling 
 /// </summary>
@@ -85,10 +87,10 @@ public class deckCard : Singleton<deckCard>
 
     public void shuffle()
     {
-        for (int i = index; i < cards.Count; i++)
+        for (int i = this.index; i < cards.Count; i++)
         {
             int index = Random.Range(i, cards.Count);
-            (cards[index], cards[i], cardUIs[index], cardUIs[i]) = (cards[i], cards[index], cardUIs[i], cardUIs[index]);
+            (cards[index], cards[i]) = (cards[i], cards[index]);
         }
     }
 
@@ -116,6 +118,7 @@ public class deckCard : Singleton<deckCard>
         for (int i = 0; i < num; i++)
         {
             var card = drawCard();
+            if (card == null) continue;
             cardInHand.Add(card);
         }
         return cardInHand;
@@ -172,6 +175,14 @@ public class deckCard : Singleton<deckCard>
     }
 
     #endregion
+    public void handleInput(byte num)
+    {
+        Debug.Log(num);
+        if (num > cardInHand.Count - 1) return;
+        bool res = cardInHand[num].effect();
+        if (!res) { Debug.Log("trigger fail"); }
+
+    }
     #region  mono
     private void OnEnable()
     {
@@ -180,15 +191,26 @@ public class deckCard : Singleton<deckCard>
         {
             cards = data.cards;
         }
-
     }
     private void OnDisable()
     {
-
+        PlayerController.Instance.input.card.card1.performed -= (ctx) => { handleInput(0); };
+        PlayerController.Instance.input.card.card2.performed -= (ctx) => { handleInput(1); };
+        PlayerController.Instance.input.card.card3.performed -= (ctx) => { handleInput(2); };
+        PlayerController.Instance.input.card.card4.performed -= (ctx) => { handleInput(3); };
+        PlayerController.Instance.input.card.card5.performed -= (ctx) => { handleInput(4); };
+        PlayerController.Instance.input.card.card6.performed -= (ctx) => { handleInput(5); };
     }
     void Start()
     {
         loadCard();
+        if (PlayerController.Instance == null) return;
+        PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
+        PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
+        PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
+        PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
+        PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
+        PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
     }
     #endregion
 }

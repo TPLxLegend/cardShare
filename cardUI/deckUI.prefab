@@ -54,9 +54,13 @@ MonoBehaviour:
   cardInHand: []
   cardUI: {fileID: 7264956292891012254, guid: 4561e7309929509459f1a3730badf583, type: 3}
   cardBar: {fileID: 3376231299668014582}
+  brick: {fileID: 0}
   cardUIs: []
   index: 0
   handLimit: 5
+  cardPointTranferWhenReachLimitNum: 100
+  cardPoint: 0
+  minDeckSize: 10
 --- !u!1 &6037955408660450953
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -355,6 +359,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5812278407898055516, guid: 4fe8420ebe270324e85275ab5bf2c154,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812278407898055516, guid: 4fe8420ebe270324e85275ab5bf2c154,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812278407898055516, guid: 4fe8420ebe270324e85275ab5bf2c154,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812278407898055516, guid: 4fe8420ebe270324e85275ab5bf2c154,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812278407898055516, guid: 4fe8420ebe270324e85275ab5bf2c154,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6857690316567205381, guid: 4fe8420ebe270324e85275ab5bf2c154,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -408,6 +437,11 @@ PrefabInstance:
     - target: {fileID: 8174522777126675632, guid: 4fe8420ebe270324e85275ab5bf2c154,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934001544836710397, guid: 4fe8420ebe270324e85275ab5bf2c154,
+        type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

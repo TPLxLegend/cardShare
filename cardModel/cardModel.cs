@@ -1,4 +1,6 @@
+using System.Linq;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "card")]
@@ -57,6 +59,7 @@ public class cardModel : ScriptableObject
         rot = Quaternion.LookRotation(dir);
 
         GameObject InsSkillObj = Instantiate(skillObj, position, rot);
+
         skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
 
         skillObjScript.source = tf.gameObject;
@@ -103,8 +106,24 @@ public class cardModel : ScriptableObject
         Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
         Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
         Dic.singleton.trigger[triggerType].addTrigger(skillObjScript, cardEffect);
+
+
+        /// <summary>
+        /// create param custom to send rpc to other client to instantiate skillObj in their local 
+        /// </summary>
+        /// <returns></returns>
+        ClientRpcParams pa = new ClientRpcParams()
+        {
+            Send = new ClientRpcSendParams()
+            {
+                TargetClientIds = NetworkManager.Singleton.ConnectedClientsList.Select(client => client.ClientId).Where(clientId => clientId != NetworkManager.Singleton.LocalClientId).ToArray()
+            }
+        };
+        //co the gay do tre 
+        serverFunction.Instance.InstantiateNetObjClientRpc(skillObj, NetworkManager.Singleton.LocalClientId, clientRpcParams: pa);
         return true;
     }
+    //public static void set
     #region count
     public bool addCard(int num)
     {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class card : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class card : MonoBehaviour
         this.cardModel = cardModel;
         //GetComponentInChildren<TMP_Text>().text = cardModel.name;
         manaCostValueUI.text = cardModel.manaCost.ToString();
-        if (cardModel.icon) GetComponentInChildren<SpriteRenderer>().sprite = cardModel.icon;
-        GetComponent<UnityEngine.UI.Button>().onClick.AddListener(click);
+        if (cardModel.icon) GetComponentInChildren<Image>().sprite = cardModel.icon;
+        GetComponent<Button>().onClick.AddListener(click);
     }
 
     #region customMethod
