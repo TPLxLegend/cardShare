@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using System.Linq;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.InputSystem;
 /// <summary>
