@@ -42,12 +42,13 @@ public class function
         }
         return res;
     }
-    public static void LookAtNegXAxis(Transform transform, Vector3 target)
+
+    public static void LookAtXAxis(Transform transform, Vector3 target)
     {
         Vector3 relativePos = target - transform.position;
-        Debug.Log("lookat: " + relativePos);
-        Quaternion rotation = Quaternion.LookRotation(new Vector3(relativePos.x, 0, 0));
-        Debug.Log("rotation: " + rotation);
+        Quaternion rotation = Quaternion.LookRotation(Vector3.Cross(relativePos, Vector3.up), Vector3.up);
         transform.rotation = rotation;
     }
+
+
 }

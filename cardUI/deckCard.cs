@@ -12,7 +12,7 @@ public class deckCard : Singleton<deckCard>
     [Header("------------Ref------------")]
     [SerializeField] List<cardModel> cards;
 
-    public List<cardModel> cardInHand; //public for effect that need ref
+    public List<card> cardInHand; //public for effect that need ref
     [SerializeField] GameObject cardUI;
     [SerializeField] GameObject cardBar;
 
@@ -22,7 +22,6 @@ public class deckCard : Singleton<deckCard>
     public byte index = 0;
     public byte handLimit = 5;
     public byte cardPointTranferWhenReachLimitNum = 100;
-    public int cardPoint = 0;
     [SerializeField] byte minDeckSize = 10;
     public int sizeDeck { get => cards.Count; }
 
@@ -36,7 +35,7 @@ public class deckCard : Singleton<deckCard>
             cardPointNum = num + card.num - card.maxCount;
             //xu li UI 
             Debug.Log("card du se chuyen doi thanh diem x" + cardPointTranferWhenReachLimitNum);
-            cardPoint = cardPointNum * cardPointTranferWhenReachLimitNum;
+            playerGeneralInfo.Instance.cardPoint = cardPointNum * cardPointTranferWhenReachLimitNum;
         }
         else if (num < 0)
         {
@@ -93,7 +92,7 @@ public class deckCard : Singleton<deckCard>
         }
     }
 
-    public cardModel drawCard()
+    public card drawCard()
     {
         if (cards.Count == 0) return null;
         if (index > sizeDeck - 1)
@@ -106,13 +105,13 @@ public class deckCard : Singleton<deckCard>
         Debug.Log("draw a card:" + card.cardEffect);
 
 
-        spawnCard(card);
-
+        var cardUI = spawnCard(card);
+        Debug.Log("cardUI:" + cardUI);
         index++;
-        return card;
+        return cardUI;
     }
 
-    public List<cardModel> drawCard(int num)
+    public List<card> drawCard(int num)
     {
         for (int i = 0; i < num; i++)
         {
@@ -127,7 +126,7 @@ public class deckCard : Singleton<deckCard>
         var cardBeRemove = cardInHand[id];
         returnCard(cardBeRemove);
     }
-    public void returnCard(cardModel md)
+    public void returnCard(card md)
     {
         despawnCard(md);
         cardInHand.Remove(md);
@@ -138,13 +137,13 @@ public class deckCard : Singleton<deckCard>
     void loadCard()
     {
         Debug.Log("start of deck card");
-        cardInHand = new List<cardModel>();
+        cardInHand = new List<card>();
         shuffle();
         Debug.Log("-------after shuffer------------");
         drawCard(handLimit);
         Debug.Log(cardInHand.Count);
     }
-    void spawnCard(cardModel card)
+    card spawnCard(cardModel card)
     {
         var res = cardUIs.FirstOrDefault(go =>
         {
@@ -154,32 +153,29 @@ public class deckCard : Singleton<deckCard>
         {
             GameObject cardInsUI = Instantiate(cardUI, cardBar.transform);
             cardUIs.Add(cardInsUI);
-            cardInsUI.GetComponent<card>().initFromCardModel(card);
-            return;
+            var cardIns = cardInsUI.GetComponent<card>();
+            cardIns.initFromCardModel(card);
+            return cardIns;
         }
         res.SetActive(true);
+        return res.GetComponent<card>();
     }
-    void despawnCard(cardModel card)
+    void despawnCard(card card)
     {
-        var res = cardUIs.FirstOrDefault(go =>
-                {
-                    return (go.GetComponent<card>()?.cardModel == card) && go.activeSelf;
-                });
-        if (res == default)
-        {
-            Debug.Log("khong co bai nao de despawn");
-            return;
-        }
-        res.SetActive(false);
+
+
+        card.gameObject.SetActive(false);
     }
 
     #endregion
     public void handleInput(byte num)
     {
-        Debug.Log(num);
-        if (num > cardInHand.Count - 1) return;
-        bool res = cardInHand[num].effect();
-        if (!res) { Debug.Log("trigger fail"); }
+        if (num > cardInHand.Count - 1)
+        {
+            Debug.Log("card In Hand num:" + cardInHand.Count);
+            return;
+        }
+        cardInHand[num].click();
 
     }
     #region  mono
@@ -190,6 +186,13 @@ public class deckCard : Singleton<deckCard>
         {
             cards = data.cards;
         }
+        if (PlayerController.Instance == null) return;
+        PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
+        PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
+        PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
+        PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
+        PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
+        PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
     }
     private void OnDisable()
     {
@@ -203,13 +206,7 @@ public class deckCard : Singleton<deckCard>
     void Start()
     {
         loadCard();
-        if (PlayerController.Instance == null) return;
-        PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
-        PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
-        PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
-        PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
-        PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
-        PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
+
     }
     #endregion
 }

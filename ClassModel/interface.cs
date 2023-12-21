@@ -24,6 +24,14 @@ public class characterInfo : NetworkBehaviour
         {DmgType.Dark,0},
     };
     public int attack;
+    /// <summary>
+    /// 0 to 100 in % unit
+    /// </summary>
+    public byte critRate = 5;
+    /// <summary>
+    /// 0 to 100 in % unit, it is addition dame % when crit 
+    /// </summary>
+    public byte critDmg = 50;
     public byte speed;
     public List<Effect> chainEffect;
     public UnityEvent<characterInfo, Effect> onChain;
@@ -37,7 +45,9 @@ public class characterInfo : NetworkBehaviour
             HP = Hp,
             Dmg = dmg,
             defense = defence[dmgType],
-            scaleDefense = 100
+            scaleDefense = 100,
+            critialRate = critRate,
+            critialScaleAddition = critDmg
         };
         JobHandle handle = dmgCalc.Schedule();
         onAttacked.Invoke(this);
@@ -98,9 +108,17 @@ public struct DamageCalcJob : IJob
     public int Dmg;
     public int defense;
     public int scaleDefense;
+    public byte critialRate;
+    public byte critialScaleAddition;
     public void Execute()
     {
-        HP[0] -= Dmg * (scaleDefense / (scaleDefense + defense));
+        Unity.Mathematics.Random rd = new Unity.Mathematics.Random(5);
+        bool isCrit = rd.NextFloat() < (critialRate / 100f);
+        if (isCrit)
+        {
+            Debug.Log("lucky crit");
+        }
+        HP[0] -= (int)(Dmg * (scaleDefense / (float)(scaleDefense + defense)) * (isCrit ? (critialScaleAddition / 100f) : 1f));
     }
 }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
   m_Name: healing
   m_EditorClassIdentifier: 
-  CardName: "ph\xE1p tr\u1EADn h\u1ED3i ph\u1EE5c"
+  CardName: "h\u1ED3i ph\u1EE5c"
   cardTag: 0100000004000000
   CardType: 2
   charJob: 0
@@ -28,10 +28,10 @@ MonoBehaviour:
   num: 0
   maxCount: 3
   conditions: []
-  skillMoveType: 0
+  skillMoveType: 5
   targetMethod: 0
-  detecttype: 0
-  triggerType: 2
+  detecttype: 1
+  triggerType: 5
   BaseDescription: 
   skillObj: {fileID: 5199947530810059855, guid: 6e5fb350cc1133046bffb306dd73ca7c,
     type: 3}

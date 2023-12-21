@@ -43,11 +43,12 @@ public class skillObj : NetworkBehaviour
     void OnCollisionEnter(Collision collision)
     {
         collisionEnter.Invoke(gameObject, collision.gameObject);
-        Debug.Log("collison:" + collision.gameObject);
+        Debug.Log("collison:" + collision.gameObject + "\n collide pos: " + collision.contacts[0].point);
     }
     void OnTriggerEnter(Collider collider)
     {
         triggerEnter.Invoke(this.gameObject, collider.gameObject);
+        Debug.Log("\ttrigger enter: " + collider.gameObject + " at " + collider.ClosestPointOnBounds(transform.position));
     }
     void OnTriggerStay(Collider collider)
     {

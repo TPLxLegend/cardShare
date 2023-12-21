@@ -17,6 +17,7 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
         {
             Resolve(g2, effects, skillObj);
             skillObj.Trigger(g2);
+
         });
     }
 
@@ -28,11 +29,13 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
         {
             mesh.enabled = false;
         }
-        if(skillObj.gameObject.TryGetComponent(out MeshCollider meshCollider)){
-            meshCollider.enabled=false;
+        if (skillObj.gameObject.TryGetComponent(out MeshCollider meshCollider))
+        {
+            meshCollider.enabled = false;
         }
-        if(skillObj.gameObject.TryGetComponent(out SphereCollider sphereCollider)){
-            sphereCollider.enabled=false;
+        if (skillObj.gameObject.TryGetComponent(out SphereCollider sphereCollider))
+        {
+            sphereCollider.enabled = false;
         }
         Debug.Log("player Resolve:" + players.ToString() + " \nCount:" + players.Count);
         foreach (Effect effect in cardEffect)
@@ -130,7 +133,7 @@ public class InArea : TriggerType
         skillObj.triggerEnter.AddListener((s, t) =>
         {
             //if(skillObj.){return;}
-            Debug.Log("trigger enter in area");
+            Debug.Log("trigger enter in area:" + t.name);
             func(skillObj, t, effects);
             skillObj.Trigger(t);
         });
@@ -146,7 +149,7 @@ public class InArea : TriggerType
                 Debug.Log("effclone rate:" + effClone.effect_rate);
                 Debug.Log(skillO.source);
                 effClone.source = skillO.source;
-                collision.GetComponent<playerInfo>().addChain(effClone);
+                collision.GetComponent<ControllReceivingSystem>().curCharacterControl.gameObject.GetComponent<playerInfo>().addChain(effClone);
             }
         }
     }

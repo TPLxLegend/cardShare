@@ -1,3 +1,5 @@
+using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
 
 public interface targetFilter
@@ -45,59 +47,62 @@ public class playerFilter : targetFilter
     public static playerFilter ins = new playerFilter();
     public bool Filter(GameObject go)
     {
-        playerInfo player;
-        if (go.TryGetComponent(out player))
+
+        if (go == PlayerController.Instance.player)
         {
-            Debug.Log("detected:" + player);
+            Debug.Log("detected:" + NetworkManager.Singleton.LocalClientId);
             return true;
         }
         return false;
     }
 }
-public class enemyFilter:targetFilter{
-    enemyFilter(){}
-    public static enemyFilter ins=new enemyFilter();
+public class enemyFilter : targetFilter
+{
+    enemyFilter() { }
+    public static enemyFilter ins = new enemyFilter();
     public bool Filter(GameObject go)
     {
-       
-        if (go.TryGetComponent(out characterInfo player))
+
+        if (go.TryGetComponent(out enemyInfo enemy))
         {
-            Debug.Log("detected:" + player);
-            return (player.teamID!=PlayerController.Instance.playerInfo.teamID);
+            Debug.Log("detected:" + enemy);
+            return (enemy.teamID != PlayerController.Instance.playerInfo.teamID);
 
         }
         return false;
     }
 }
-public class allyFilter:targetFilter{
-    allyFilter(){}
-    public static allyFilter ins=new allyFilter();
+public class allyFilter : targetFilter
+{
+    allyFilter() { }
+    public static allyFilter ins = new allyFilter();
     public bool Filter(GameObject go)
     {
-        if (go.TryGetComponent(out characterInfo player))
+        if (go.TryGetComponent(out ControllReceivingSystem player))
         {
-            if(player==PlayerController.Instance.playerInfo) return false;
+            if (player == PlayerController.Instance.playerInfo) return false;
             Debug.Log("detected:" + player);
-            return player.teamID==PlayerController.Instance.playerInfo.teamID;
+            return true;
 
         }
         return false;
     }
 }
-       
-public class seftFilter:targetFilter{
-    seftFilter(){}
-    public static seftFilter ins=new seftFilter();
+
+public class seftFilter : targetFilter
+{
+    seftFilter() { }
+    public static seftFilter ins = new seftFilter();
     public bool Filter(GameObject go)
     {
         if (go.TryGetComponent(out characterInfo player))
         {
-            if(player==PlayerController.Instance.playerInfo) return true;
-       
+            if (player == PlayerController.Instance.playerInfo) return true;
+
         }
         return false;
     }
 }
-       
+
 
 

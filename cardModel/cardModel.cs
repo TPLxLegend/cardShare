@@ -72,9 +72,15 @@ public class cardModel : ScriptableObject
     public virtual bool effect()
     {
         //xet dieu kien kich hoat
-        if (PlayerController.Instance.playerInfo.mp > manaCost)
+        var info = PlayerController.Instance.playerInfo;
+        if (info.mp >= manaCost)
         {
-            PlayerController.Instance.playerInfo.mp -= manaCost;
+            info.lostmana(manaCost);
+        }
+        else
+        {
+            Debug.Log("khong du mana de kich hoat bai: " + CardName + "\n mana:" + info.mp);
+            return false;
         }
         if (conditions.Length > 0)
         {
@@ -86,7 +92,6 @@ public class cardModel : ScriptableObject
                 }
             }
         }
-        //
         Transform tf = PlayerController.Instance.player.transform;
         Vector3 position = tf.position;
         Quaternion rot;
@@ -120,6 +125,8 @@ public class cardModel : ScriptableObject
             }
         };
         //co the gay do tre 
+        Debug.Log("before Run RPC it normally");
+        NetworkObjectReference skillRef = new NetworkObjectReference(InsSkillObj.GetComponent<NetworkObject>());
         serverFunction.Instance.InstantiateNetObjClientRpc(skillObj, NetworkManager.Singleton.LocalClientId, clientRpcParams: pa);
         return true;
     }

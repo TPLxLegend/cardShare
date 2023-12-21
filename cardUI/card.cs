@@ -17,10 +17,10 @@ public class card : MonoBehaviour
     }
 
     #region customMethod
-    void click()
+    public void click()
     {
-
         bool haveTrigger = cardModel.effect();
+        Debug.Log("trigger " + haveTrigger);
         if (!haveTrigger) return;
 
         StartCoroutine(waitForReDraw(cardModel.cooldown));
@@ -28,37 +28,20 @@ public class card : MonoBehaviour
     }
     System.Collections.IEnumerator waitForReDraw(float time)
     {
+        Debug.Log("wait");
         couterClock.SetActive(true);
         var coutUI = couterClock.GetComponentInChildren<TMPro.TMP_Text>();
+        Debug.Log("coutUI: " + coutUI);
         for (float i = time; i > 0; i -= Time.deltaTime)
         {
             coutUI.text = i.ToString("F2");
-
+            Debug.Log(i);
             yield return new WaitForSeconds(Time.deltaTime);
         }
         //coutUI.text = time.ToString();
-        deckCard.Instance.returnCard(cardModel);
-    }
-    void hold()
-    {
-        Debug.Log("hold");
-
+        couterClock.SetActive(false);
+        deckCard.Instance.returnCard(this);
     }
     #endregion
-
-    #region mono-method
-    void Awake()
-    {
-
-    }
-    void Start()
-    {
-
-
-    }
-
-
-    #endregion
-
 
 }

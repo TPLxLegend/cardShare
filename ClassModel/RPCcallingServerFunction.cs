@@ -7,6 +7,7 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
     [SerializeField] GameObject playerPrefab;
 
     NetworkObject spawnedObj;
+    [SerializeField] GameObject namePlayerCanvas;
 
     [ServerRpc(RequireOwnership = false)]
     public void spawnPlayerServerRpc(Vector3 pos, Quaternion rot, ulong clientID)
@@ -23,7 +24,7 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
         //    child.SpawnWithOwnership(clientID);
         //}
 
-       
+
         Debug.Log(spawnedObj + " is own by client: " + spawnedObj.OwnerClientId);
 
         ClientRpcParams clientRpcParams = new ClientRpcParams()
@@ -48,20 +49,26 @@ public class serverFunction : SingletonNetworkPersistent<serverFunction>
             Debug.Log("server send a boardcard when use this clientRPC");
             return;
         }
-        
+        var playerControll = PlayerController.Instance;
 
         if (networkObject.TryGet(out NetworkObject networkObj))
         {
-            Debug.Log(networkObj.gameObject+" have ownship by: "+networkObj.OwnerClientId);
-            PlayerController.Instance.player = networkObj.gameObject;
+            Debug.Log(networkObj.gameObject + " have ownship by: " + networkObj.OwnerClientId);
+            playerControll.player = networkObj.gameObject;
         }
         var tf = networkObj.gameObject.transform;
         Instantiate(CameraPre, tf.position, tf.rotation);
 
-        var controllRec = PlayerController.Instance.controllReceivingSystem = networkObj.gameObject.GetComponent<ControllReceivingSystem>();
-        controllRec.onCurCharacterChange.AddListener(PlayerController.Instance.loadPlayerInfo);
-        PlayerController.Instance.controller = controllRec.characterController;
-        PlayerController.Instance.loadPlayerInfo(controllRec.curCharacterControl);
+        var controllRec = playerControll.controllReceivingSystem = networkObj.gameObject.GetComponent<ControllReceivingSystem>();
+        controllRec.onCurCharacterChange.AddListener(playerControll.loadPlayerInfo);
+        playerControll.controller = controllRec.characterController;
+        playerControll.loadPlayerInfo(controllRec.curCharacterControl);
+        string plname = playerGeneralInfo.Instance.namePlayer = "Người chơi " + clientId;
+        GameObject infoCanvas = Instantiate(namePlayerCanvas, tf);
+        infoCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+        infoCanvas.GetComponentInChildren<TMPro.TMP_Text>().text = plname;
+        infoCanvas.AddComponent<alwayFaceCamera>();
+        infoCanvas.AddComponent<hpBarInMap>();
     }
 
     [ServerRpc(RequireOwnership = false)]
