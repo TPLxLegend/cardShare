@@ -175,6 +175,7 @@ public class deckCard : Singleton<deckCard>
             Debug.Log("card In Hand num:" + cardInHand.Count);
             return;
         }
+        Debug.Log("num:"+num+"card in hand count:"+cardInHand.Count);
         cardInHand[num].click();
 
     }
@@ -186,13 +187,8 @@ public class deckCard : Singleton<deckCard>
         {
             cards = data.cards;
         }
-        if (PlayerController.Instance == null) return;
-        PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
-        PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
-        PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
-        PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
-        PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
-        PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
+       // if (PlayerController.Instance == null) return;
+       
     }
     private void OnDisable()
     {
@@ -206,9 +202,18 @@ public class deckCard : Singleton<deckCard>
     void Start()
     {
         loadCard();
-
+        PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
+        PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
+        PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
+        PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
+        PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
+        PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
     }
     #endregion
+    public void toogleCardInput()
+    {
+
+    }
 }
 
 
