@@ -127,7 +127,7 @@ public class deckCard : Singleton<deckCard>
     public void returnCard(card md)
     {
         despawnCard(md);
-        //cardInHand.Remove(md);
+
         drawCard(1);
     }
     #endregion
@@ -141,27 +141,30 @@ public class deckCard : Singleton<deckCard>
         drawCard(handLimit);
         Debug.Log(cardInHand.Count);
     }
-    card spawnCard(cardModel card)
+    card spawnCard(cardModel card, int id = -1)
     {
+
         var res = cardInHand.FirstOrDefault(go =>
         {
-            return (go.GetComponent<card>()?.cardModel == card) && (!go.gameObject.activeSelf);
+            return !go.gameObject.activeSelf;
         });
+        Debug.Log("res:" + res);
         if (res == default)
         {
-            GameObject cardInsUI = Instantiate(cardUI, cardBar.transform);
-            cardInHand.Add(cardInsUI.GetComponent<card>());
-            var cardIns = cardInsUI.GetComponent<card>();
-            cardIns.initFromCardModel(card);
-            return cardIns;
+            Debug.Log("res is default");
+            res = Instantiate(cardUI, cardBar.transform).GetComponent<card>();
+            cardInHand.Add(res);
         }
-        res.gameObject.SetActive(true);
-        return res.GetComponent<card>();
+
+        res.initFromCardModel(card);
+        if (res.gameObject.activeSelf == false)
+        {
+            res.gameObject.SetActive(true);
+        }
+        return res;
     }
     void despawnCard(card card)
     {
-
-
         card.gameObject.SetActive(false);
     }
 
