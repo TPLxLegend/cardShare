@@ -22,14 +22,20 @@ public class centerOfScreen : targetMethod
 
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100f))
+        if (Physics.Raycast(ray, out hit, 100f, ~LayerMask.GetMask("PlayerModel")))
         {
-            Debug.Log(hit.transform.name);
+            Debug.Log("Ray Origin: " + ray.origin);
+            Debug.Log("target raycast hit:" + hit.transform.name);
+            Debug.Log("hit point: " + hit.point + " name:" + hit.transform.name);
+
+        }
+        else
+        {
+            Debug.Log("not hit every thing");
         }
 
         // Trả về vị trí hit bởi raycast
         var point = hit.point;
-        Debug.Log("point:" + point);
         return point;
     }
 }

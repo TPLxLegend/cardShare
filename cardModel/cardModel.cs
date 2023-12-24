@@ -98,8 +98,9 @@ public class cardModel : ScriptableObject
 
         Vector3 targetPosition = Dic.singleton.targetMethod[targetMethod].target();
 
-        Vector3 dir = (targetPosition - tf.position).normalized * skillObj.GetComponent<SphereCollider>().radius;
+        Vector3 dir = (targetPosition - tf.position).normalized * (1 + skillObj.GetComponent<SphereCollider>().radius);
         position += 0.1f * dir;
+        Debug.Log("card ins dir:" + dir);
         rot = Quaternion.LookRotation(dir);
 
         GameObject InsSkillObj = Instantiate(skillObj, position, rot);
@@ -112,22 +113,17 @@ public class cardModel : ScriptableObject
         Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
         Dic.singleton.trigger[triggerType].addTrigger(skillObjScript, cardEffect);
 
-
-        /// <summary>
-        /// create param custom to send rpc to other client to instantiate skillObj in their local 
-        /// </summary>
-        /// <returns></returns>
-        ClientRpcParams pa = new ClientRpcParams()
+        try
         {
-            Send = new ClientRpcSendParams()
-            {
-                TargetClientIds = NetworkManager.Singleton.ConnectedClientsList.Select(client => client.ClientId).Where(clientId => clientId != NetworkManager.Singleton.LocalClientId).ToArray()
-            }
-        };
-        //co the gay do tre 
-        Debug.Log("before Run RPC it normally");
-        NetworkObjectReference skillRef = new NetworkObjectReference(InsSkillObj.GetComponent<NetworkObject>());
-        serverFunction.Instance.InstantiateNetObjClientRpc(skillObj, NetworkManager.Singleton.LocalClientId, clientRpcParams: pa);
+            int i = playerGeneralInfo.Instance.getIdSkillObj(skillObj);
+            playerGeneralInfo.Instance.SpawnSkillObjServerRpc(NetworkManager.Singleton.LocalClientId, i, position, rot, skillMoveType, targetPosition, speed, timeStandby);
+
+        }
+        catch
+        {
+            Debug.Log("CardModel system: fail to sync it to other when spawning");
+        }
+
         return true;
     }
     //public static void set

@@ -10,8 +10,12 @@ public class skillObj : NetworkBehaviour
     /// <summary>
     /// g1 is this, g2 is collide object
     /// </summary>
-    public UnityEvent<GameObject, GameObject> collisionEnter, triggerEnter, onDestroy, triggerExit, triggerStay;
-    public UnityEvent<skillObj> onUpdate;
+    public UnityEvent<GameObject, GameObject> collisionEnter = new UnityEvent<GameObject, GameObject>();
+    public UnityEvent<GameObject, GameObject> triggerEnter = new UnityEvent<GameObject, GameObject>();
+    public UnityEvent<GameObject, GameObject> onDestroy = new UnityEvent<GameObject, GameObject>();
+    public UnityEvent<GameObject, GameObject> triggerExit = new UnityEvent<GameObject, GameObject>();
+    public UnityEvent<GameObject, GameObject> triggerStay = new UnityEvent<GameObject, GameObject>();
+    public UnityEvent<skillObj> onUpdate = new UnityEvent<skillObj>();
 
     public GameObject source;
     /// <summary>
@@ -43,12 +47,12 @@ public class skillObj : NetworkBehaviour
     void OnCollisionEnter(Collision collision)
     {
         collisionEnter.Invoke(gameObject, collision.gameObject);
-        Debug.Log("collison:" + collision.gameObject + "\n collide pos: " + collision.contacts[0].point);
+        //Debug.Log("collison:" + collision.gameObject + "\n collide pos: " + collision.contacts[0].point);
     }
     void OnTriggerEnter(Collider collider)
     {
         triggerEnter.Invoke(this.gameObject, collider.gameObject);
-        Debug.Log("\ttrigger enter: " + collider.gameObject + " at " + collider.ClosestPointOnBounds(transform.position));
+        // Debug.Log("\ttrigger enter: " + collider.gameObject + " at " + collider.ClosestPointOnBounds(transform.position));
     }
     void OnTriggerStay(Collider collider)
     {
@@ -69,5 +73,7 @@ public class skillObj : NetworkBehaviour
         onDestroy.RemoveAllListeners();
         onUpdate.RemoveAllListeners();
     }
+
+
 }
 

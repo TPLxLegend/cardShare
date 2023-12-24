@@ -12,7 +12,11 @@ public class card : MonoBehaviour
         this.cardModel = cardModel;
         //GetComponentInChildren<TMP_Text>().text = cardModel.name;
         manaCostValueUI.text = cardModel.manaCost.ToString();
-        if (cardModel.icon) GetComponentInChildren<Image>().sprite = cardModel.icon;
+        if (cardModel.icon)
+        {
+            var iconObj = transform.GetChild(0).GetChild(0).gameObject;
+            iconObj.GetComponent<Image>().sprite = cardModel.icon;
+        }
         GetComponent<Button>().onClick.AddListener(click);
     }
 

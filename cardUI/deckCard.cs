@@ -17,7 +17,6 @@ public class deckCard : Singleton<deckCard>
     [SerializeField] GameObject cardBar;
 
     [SerializeField] cardModel brick;
-    [SerializeField] List<GameObject> cardUIs;
     [Header("------------Data------------")]
     public byte index = 0;
     public byte handLimit = 5;
@@ -117,7 +116,6 @@ public class deckCard : Singleton<deckCard>
         {
             var card = drawCard();
             if (card == null) continue;
-            cardInHand.Add(card);
         }
         return cardInHand;
     }
@@ -129,7 +127,7 @@ public class deckCard : Singleton<deckCard>
     public void returnCard(card md)
     {
         despawnCard(md);
-        cardInHand.Remove(md);
+        //cardInHand.Remove(md);
         drawCard(1);
     }
     #endregion
@@ -145,19 +143,19 @@ public class deckCard : Singleton<deckCard>
     }
     card spawnCard(cardModel card)
     {
-        var res = cardUIs.FirstOrDefault(go =>
+        var res = cardInHand.FirstOrDefault(go =>
         {
-            return (go.GetComponent<card>()?.cardModel == card) && (!go.activeSelf);
+            return (go.GetComponent<card>()?.cardModel == card) && (!go.gameObject.activeSelf);
         });
         if (res == default)
         {
             GameObject cardInsUI = Instantiate(cardUI, cardBar.transform);
-            cardUIs.Add(cardInsUI);
+            cardInHand.Add(cardInsUI.GetComponent<card>());
             var cardIns = cardInsUI.GetComponent<card>();
             cardIns.initFromCardModel(card);
             return cardIns;
         }
-        res.SetActive(true);
+        res.gameObject.SetActive(true);
         return res.GetComponent<card>();
     }
     void despawnCard(card card)
@@ -175,7 +173,7 @@ public class deckCard : Singleton<deckCard>
             Debug.Log("card In Hand num:" + cardInHand.Count);
             return;
         }
-        Debug.Log("num:"+num+"card in hand count:"+cardInHand.Count);
+        Debug.Log("num:" + num + "card in hand count:" + cardInHand.Count);
         cardInHand[num].click();
 
     }
@@ -187,31 +185,39 @@ public class deckCard : Singleton<deckCard>
         {
             cards = data.cards;
         }
-       // if (PlayerController.Instance == null) return;
-       
+        toogleCardInput(true);
     }
     private void OnDisable()
     {
-        PlayerController.Instance.input.card.card1.performed -= (ctx) => { handleInput(0); };
-        PlayerController.Instance.input.card.card2.performed -= (ctx) => { handleInput(1); };
-        PlayerController.Instance.input.card.card3.performed -= (ctx) => { handleInput(2); };
-        PlayerController.Instance.input.card.card4.performed -= (ctx) => { handleInput(3); };
-        PlayerController.Instance.input.card.card5.performed -= (ctx) => { handleInput(4); };
-        PlayerController.Instance.input.card.card6.performed -= (ctx) => { handleInput(5); };
+        toogleCardInput(false);
     }
     void Start()
     {
         loadCard();
-        PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
-        PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
-        PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
-        PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
-        PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
-        PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
+        toogleCardInput(true);
     }
     #endregion
-    public void toogleCardInput()
+    public void toogleCardInput(bool state)
     {
+        if (PlayerController.Instance == null) return;
+        if (state)
+        {
+            PlayerController.Instance.input.card.card1.performed += (ctx) => { handleInput(0); };
+            PlayerController.Instance.input.card.card2.performed += (ctx) => { handleInput(1); };
+            PlayerController.Instance.input.card.card3.performed += (ctx) => { handleInput(2); };
+            PlayerController.Instance.input.card.card4.performed += (ctx) => { handleInput(3); };
+            PlayerController.Instance.input.card.card5.performed += (ctx) => { handleInput(4); };
+            PlayerController.Instance.input.card.card6.performed += (ctx) => { handleInput(5); };
+        }
+        else
+        {
+            PlayerController.Instance.input.card.card1.performed -= (ctx) => { handleInput(0); };
+            PlayerController.Instance.input.card.card2.performed -= (ctx) => { handleInput(1); };
+            PlayerController.Instance.input.card.card3.performed -= (ctx) => { handleInput(2); };
+            PlayerController.Instance.input.card.card4.performed -= (ctx) => { handleInput(3); };
+            PlayerController.Instance.input.card.card5.performed -= (ctx) => { handleInput(4); };
+            PlayerController.Instance.input.card.card6.performed -= (ctx) => { handleInput(5); };
+        }
 
     }
 }
