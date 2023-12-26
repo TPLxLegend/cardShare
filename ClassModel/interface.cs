@@ -40,6 +40,8 @@ public class characterInfo : NetworkBehaviour
     {
         NativeArray<int> Hp = new NativeArray<int>(1, Allocator.TempJob);
         Hp[0] = hp.Value;
+        System.Random rd = new System.Random();
+        int t = rd.Next(0, 100);
         DamageCalcJob dmgCalc = new DamageCalcJob()
         {
             HP = Hp,
@@ -47,7 +49,8 @@ public class characterInfo : NetworkBehaviour
             defense = defence[dmgType],
             scaleDefense = 100,
             critialRate = critRate,
-            critialScaleAddition = critDmg
+            critialScaleAddition = critDmg,
+            t = t,
         };
         JobHandle handle = dmgCalc.Schedule();
         onAttacked.Invoke(this);
@@ -109,13 +112,13 @@ public struct DamageCalcJob : IJob
     public int defense;
     public int scaleDefense;
     public byte critialRate;
+    //t is random 0 to 99 for compare crit rate 
+    public int t;
     public int critialScaleAddition;
     public void Execute()
     {
-        Unity.Mathematics.Random rd = new Unity.Mathematics.Random(10);
-        float t = rd.NextFloat();
         Debug.Log("crit rate:" + critialRate + "  t:" + t);
-        bool isCrit = t < (critialRate / 100f);
+        bool isCrit = t < critialRate;
         if (isCrit)
         {
             Debug.Log("lucky crit");

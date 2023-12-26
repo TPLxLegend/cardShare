@@ -1793,7 +1793,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3700632933954553314}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: gacchaCardUI, Assembly-CSharp
         m_MethodName: clickToGaccha
         m_Mode: 3
@@ -1925,7 +1925,6 @@ GameObject:
   - component: {fileID: 4652078698610632665}
   - component: {fileID: 5145427399964454895}
   - component: {fileID: 6108291648483098698}
-  - component: {fileID: 3700632933954553314}
   m_Layer: 5
   m_Name: GacchaCanvas
   m_TagString: Untagged
@@ -2017,39 +2016,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3700632933954553314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8443628036597622821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d224032be63424c6ad4d614c0f68041, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  packList:
-  - {fileID: 11400000, guid: bfafeac71369ca8528d54e6a1f273385, type: 2}
-  - {fileID: 11400000, guid: dacd41700a663aa45bd81e9a6e06baff, type: 2}
-  - {fileID: 11400000, guid: a391d3c35311e9fe38ba4bc006751265, type: 2}
-  indexOfCurrentPack: 255
-  cardUIResultTemplate: {fileID: 8875290235297502576, guid: f19e46a5fb9aef7e685154c00ae26a53,
-    type: 3}
-  gacchaResultPanel: {fileID: 6467769137998327098}
-  gacchaResultContentZone: {fileID: 706129833492966987}
-  packUITemplate: {fileID: 2975456685747009666, guid: b15ebe0c5d8d5cbd2b001473515400b1,
-    type: 3}
-  gacchaPanel: {fileID: 3565833390373881410}
-  leftsidePackPanel: {fileID: 4308568887118652453}
-  rightsideContentPanel: {fileID: 5372488562995411368}
-  buttonGacchaX1: {fileID: 5385544540649010807}
-  buttonGacchaXAll: {fileID: 4236867041848293724}
-  namePackUI: {fileID: 7843994520861996965}
-  timeRemainUI: {fileID: 2797479683586067791}
-  noteUI: {fileID: 2363545506057952815}
-  illustrationPackUI: {fileID: 3201499669644136588}
-  prizeForGaccha: 100
 --- !u!1001 &388169234044519352
 PrefabInstance:
   m_ObjectHideFlags: 0

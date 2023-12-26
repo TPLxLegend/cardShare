@@ -6,6 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody), typeof(NetworkObject), typeof(clientNetworkTransform))]
 public class skillObj : NetworkBehaviour
 {
+    public bool canMove = true;
     public List<GameObject> objInRange;
     /// <summary>
     /// g1 is this, g2 is collide object
