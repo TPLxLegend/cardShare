@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 /// <summary>
 /// quản lý cardModel thay cho card repository và Gameobject UI của chúng như 1 pooling 
 /// </summary>
@@ -183,10 +182,17 @@ public class deckCard : Singleton<deckCard>
     #region  mono
     private void OnEnable()
     {
-        var data = deckData.Load();
-        if (data != null)
+        try
         {
-            cards = data.cards;
+            var data = deckData.Load();
+            if (data != null)
+            {
+                cards = data.cards;
+            }
+        }
+        catch
+        {
+            Debug.Log("can not load from file");
         }
         toogleCardInput(true);
     }
