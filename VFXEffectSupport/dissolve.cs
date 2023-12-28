@@ -3,30 +3,31 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class dissolve : MonoBehaviour
 {
-    [SerializeField] int duration;
-    [SerializeField] float timeStep;
-    [SerializeField] Material dissolveMaterial;
+    public float duration = 2;
+    [SerializeField] float timeStep = 0.1f;
     Material originMat;
+
     public void RunDisolve()
     {
         StartCoroutine(Disolve());
     }
     IEnumerator Disolve()
     {
-        var mesh = GetComponent<MeshRenderer>();
-        originMat = mesh.material;
-        mesh.material = dissolveMaterial;
-        Debug.Log("disolve mat:" + mesh.material);
-
-        for (float i = 0; i < duration; i += timeStep)
+        var meshes = GetComponentsInChildren<Renderer>();
+        foreach (var mesh in meshes)
         {
-            Debug.Log("dissolve step=" + i);
-            dissolveMaterial.SetFloat("_dissolveValue", i);
-            yield return new WaitForSeconds(timeStep);
-        }
-        mesh.enabled = false;
-        mesh.material = originMat;
-        dissolveMaterial.SetFloat("_dissolveValue", 1);
+            originMat = mesh.material;
+            mesh.material = new Material(originMat);
+            Debug.Log("disolve mat:" + mesh.material);
 
+            for (float i = 0; i < 1; i += timeStep)
+            {
+                Debug.Log("dissolve step=" + i);
+                mesh.material.SetFloat("_dissolve", i);
+                yield return new WaitForSeconds(timeStep * duration);
+            }
+            mesh.enabled = false;
+            mesh.material = originMat;
+        }
     }
 }

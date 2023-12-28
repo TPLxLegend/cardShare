@@ -9,7 +9,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(NetworkObject))]
 public class characterInfo : NetworkBehaviour
 {
-    public NetworkVariable<int> hp;
+
+    public NetworkVariable<int> hp = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public int maxHP;
     public byte mp;
     public byte teamID;
@@ -34,8 +35,10 @@ public class characterInfo : NetworkBehaviour
     public int critDmg = 50;
     public byte speed;
     public List<Effect> chainEffect;
-    public UnityEvent<characterInfo, Effect> onChain;
-    public UnityEvent<characterInfo> onSpawn, onDie, onAttacked;
+    public UnityEvent<characterInfo, Effect> onChain = new UnityEvent<characterInfo, Effect>();
+    public UnityEvent<characterInfo> onSpawn = new UnityEvent<characterInfo>();
+    public UnityEvent<characterInfo> onDie = new UnityEvent<characterInfo>();
+    public UnityEvent<characterInfo> onAttacked = new UnityEvent<characterInfo>();
     public virtual void takeDamage(int dmg, DmgType dmgType)
     {
         NativeArray<int> Hp = new NativeArray<int>(1, Allocator.TempJob);
@@ -54,11 +57,12 @@ public class characterInfo : NetworkBehaviour
         };
         JobHandle handle = dmgCalc.Schedule();
         onAttacked.Invoke(this);
-        Debug.Log("testing player:" + this + " take dame:" + dmg);
+        Debug.Log("testing :" + this + " take dame:" + dmg);
         handle.Complete();
         hp.Value = dmgCalc.HP[0];
         Hp.Dispose();
-        Debug.Log(hp);
+        Debug.Log("HP:" + hp.Value);
+        Debug.Log("method:  " + hp.OnValueChanged);
     }
     public virtual void healing(int heal) { }
 
@@ -75,16 +79,11 @@ public class characterInfo : NetworkBehaviour
             chainEffect.Add(effect);
         }
     }
-    public override void OnNetworkSpawn()
-    {
-        hp = new NetworkVariable<int>(maxHP, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
-    }
-
     protected virtual void OnEnable()
     {
         //xu li loading dau game
         onSpawn.Invoke(this);
+        hp.Value = maxHP;
         hp.OnValueChanged += checkDie;
 
     }
@@ -93,14 +92,14 @@ public class characterInfo : NetworkBehaviour
         hp.OnValueChanged -= checkDie;
     }
 
-    private void checkDie(int previousValue, int newValue)
+    public void checkDie(int previousValue, int newValue)
     {
-        if (hp.Value <= 0)
-        {
-            Debug.Log(name + "   ----------------Die");
-            hp.Value = 0;
-            onDie.Invoke(this);
-        }
+        Debug.Log("checkDie new value:" + newValue);
+        if (newValue > 0) { return; }
+        Debug.Log(name + "   ----------------Die");
+
+        onDie.Invoke(this);
+
     }
 }
 
@@ -112,12 +111,12 @@ public struct DamageCalcJob : IJob
     public int defense;
     public int scaleDefense;
     public byte critialRate;
-    //t is random 0 to 99 for compare crit rate 
+    //t is random 0 to 99 for compare "<" with crit rate 
     public int t;
     public int critialScaleAddition;
     public void Execute()
     {
-        Debug.Log("crit rate:" + critialRate + "  t:" + t);
+        Debug.Log("crit rate:" + (int)critialRate + "  t:" + t);
         bool isCrit = t < critialRate;
         if (isCrit)
         {

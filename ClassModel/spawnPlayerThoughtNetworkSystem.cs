@@ -71,6 +71,43 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             };
         }
     }
+    public GameObject bulletVFX;
+    [ServerRpc(RequireOwnership = false)]
+    public void spawnBulletServerRpc(ulong clientID, Vector3 hitpoint, float bulletSpeed, Vector3 pos, Quaternion rot)
+    {
+        Debug.Log("spawn bullet rpc called");
+        GameObject bullet = Instantiate(bulletVFX, pos, rot);
+        var netBullet = bullet.GetComponent<NetworkObject>();
+        netBullet.SpawnWithOwnership(clientID);
 
+        var direction = (hitpoint - bullet.transform.position).normalized;
+        var vfx = bullet.GetComponent<UnityEngine.VFX.VisualEffect>();
+        GameObject bulletParticle = bullet.transform.GetChild(0).gameObject;
+        skillObj bulletScript = bulletParticle.AddComponent<skillObj>();
+        bulletScript.onUpdate = new UnityEngine.Events.UnityEvent<skillObj>();
+        bulletScript.collisionEnter = new UnityEngine.Events.UnityEvent<GameObject, GameObject>();
+
+        bulletScript.onUpdate.AddListener((self) =>
+        {
+            if (self.canMove)
+            {
+                self.gameObject.transform.position += direction * bulletSpeed * Time.deltaTime;
+            }
+        });
+        bulletScript.collisionEnter.AddListener((selfGO, collideGO) =>
+        {
+            if (collideGO.TryGetComponent(out enemyInfo info))
+            {
+                var plinfo = PlayerController.Instance.playerInfo;
+
+                info.takeDamage(plinfo.attack, DmgType.Physic);
+            }
+            vfx.SendEvent("onExplode");
+            //vfx.SetBool("isFollowTf", false);
+            Destroy(selfGO);
+        });
+        Destroy(bullet, 20);
+
+    }
 
 }
