@@ -73,14 +73,20 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     }
     public GameObject bulletVFX;
     [ServerRpc(RequireOwnership = false)]
-    public void spawnBulletServerRpc(ulong clientID, Vector3 hitpoint, float bulletSpeed, Vector3 pos, Quaternion rot)
+    public void spawnBulletServerRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot)
+    {
+        Debug.Log("spawn bullet rpc called");
+        spawnBulletClientRpc(clientID, bulletSpeed, pos, rot);
+    }
+    [ClientRpc]
+    public void spawnBulletClientRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot)
     {
         Debug.Log("spawn bullet rpc called");
         GameObject bullet = Instantiate(bulletVFX, pos, rot);
-        var netBullet = bullet.GetComponent<NetworkObject>();
-        netBullet.SpawnWithOwnership(clientID);
 
-        var direction = (hitpoint - bullet.transform.position).normalized;
+        var direction = bullet.transform.forward;
+        Debug.Log("spawn bullet with param: pos " + pos + "  rot" + rot +
+            "\n" + "real: pos " + bullet.transform.position + "  rot " + bullet.transform.rotation);
         var vfx = bullet.GetComponent<UnityEngine.VFX.VisualEffect>();
         GameObject bulletParticle = bullet.transform.GetChild(0).gameObject;
         skillObj bulletScript = bulletParticle.AddComponent<skillObj>();
@@ -89,10 +95,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
 
         bulletScript.onUpdate.AddListener((self) =>
         {
-            if (self.canMove)
-            {
-                self.gameObject.transform.position += direction * bulletSpeed * Time.deltaTime;
-            }
+            self.gameObject.transform.position += direction * bulletSpeed * Time.deltaTime;
         });
         bulletScript.collisionEnter.AddListener((selfGO, collideGO) =>
         {
@@ -107,7 +110,6 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             Destroy(selfGO);
         });
         Destroy(bullet, 20);
-
     }
 
 }
