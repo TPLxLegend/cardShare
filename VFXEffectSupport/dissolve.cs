@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-[RequireComponent(typeof(MeshRenderer))]
+
 public class dissolve : MonoBehaviour
 {
     public float duration = 2;

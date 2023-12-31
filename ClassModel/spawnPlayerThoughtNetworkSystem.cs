@@ -6,7 +6,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     [SerializeField] GameObject CameraPre;
     [SerializeField] GameObject playerPrefab;
 
-    NetworkObject spawnedObj;
+    NetworkObject netSpawned;
     [SerializeField] GameObject namePlayerCanvas;
 
     [ServerRpc(RequireOwnership = false)]
@@ -15,11 +15,13 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         Debug.Log("pos when call rpc:   " + pos);
         Debug.Log("who call it: " + clientID);
         var newSpawned = Instantiate(playerPrefab, pos, rot);
-        spawnedObj = newSpawned.GetComponent<NetworkObject>();
+        netSpawned = newSpawned.GetComponent<NetworkObject>();
+        netSpawned.SpawnAsPlayerObject(clientID);
+        Debug.Log(netSpawned + " is own by client: " + netSpawned.OwnerClientId);
 
-        spawnedObj.SpawnWithOwnership(clientID);
-
-        //Debug.Log(spawnedObj + " is own by client: " + spawnedObj.OwnerClientId);
+        //var goTest = new GameObject("test");
+        // goTest.AddComponent<playerInfo>();
+        // spawnCharacterIntoTeam(clientID, goTest, newSpawned.transform.GetChild(1));
 
         ClientRpcParams clientRpcParams = new ClientRpcParams()
         {
@@ -28,10 +30,18 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
                 TargetClientIds = new ulong[] { clientID }
             }
         };
-        NetworkObjectReference netObjRef = new NetworkObjectReference(spawnedObj);
+        NetworkObjectReference netObjRef = new NetworkObjectReference(netSpawned);
         setPlayerClientRpc(netObjRef, clientID, clientRpcParams);
     }
 
+    // public void spawnCharacterIntoTeam(ulong clientID, GameObject character, Transform team)
+    // {
+    //     var charIns = Instantiate(character);
+    //     var insNet = charIns.GetComponent<NetworkObject>();
+    //     insNet.SpawnWithOwnership(clientID);
+
+    //     insNet.TrySetParent(team, false);
+    // }
 
     [ClientRpc]
     public void setPlayerClientRpc(NetworkObjectReference networkObject, ulong clientId = 0, ClientRpcParams clientRpcParams = default)
