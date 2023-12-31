@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
 {
     [SerializeField] GameObject CameraPre;
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] List<GameObject> characterPrefab;
+    [SerializeField] GameObject team;
 
     NetworkObject netSpawned;
     [SerializeField] GameObject namePlayerCanvas;
@@ -16,12 +20,13 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         Debug.Log("who call it: " + clientID);
         var newSpawned = Instantiate(playerPrefab, pos, rot);
         netSpawned = newSpawned.GetComponent<NetworkObject>();
-        netSpawned.SpawnAsPlayerObject(clientID);
+        netSpawned.SpawnWithOwnership(clientID);
         Debug.Log(netSpawned + " is own by client: " + netSpawned.OwnerClientId);
 
-        //var goTest = new GameObject("test");
-        // goTest.AddComponent<playerInfo>();
-        // spawnCharacterIntoTeam(clientID, goTest, newSpawned.transform.GetChild(1));
+        var tf = spawnCharacterInto(clientID, team, netSpawned.transform);
+
+        spawnCharacterInto(clientID, characterPrefab[0], tf);
+
 
         ClientRpcParams clientRpcParams = new ClientRpcParams()
         {
@@ -34,14 +39,17 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         setPlayerClientRpc(netObjRef, clientID, clientRpcParams);
     }
 
-    // public void spawnCharacterIntoTeam(ulong clientID, GameObject character, Transform team)
-    // {
-    //     var charIns = Instantiate(character);
-    //     var insNet = charIns.GetComponent<NetworkObject>();
-    //     insNet.SpawnWithOwnership(clientID);
+    public Transform spawnCharacterInto(ulong clientID, GameObject character, Transform team)
+    {
+        var charIns = Instantiate(character);
+        var insNet = charIns.GetComponent<NetworkObject>();
+        insNet.SpawnWithOwnership(clientID, team);
 
-    //     insNet.TrySetParent(team, false);
-    // }
+
+        bool res = insNet.TrySetParent(team, false);
+        Debug.Log(res);
+        return insNet.transform;
+    }
 
     [ClientRpc]
     public void setPlayerClientRpc(NetworkObjectReference networkObject, ulong clientId = 0, ClientRpcParams clientRpcParams = default)
@@ -61,6 +69,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             playerControll.player = networkObj.gameObject;
         }
         var tf = networkObj.gameObject.transform;
+        networkObj.GetComponent<ControllReceivingSystem>().ReLoadCurCharacter();
         Instantiate(CameraPre, tf.position, tf.rotation);
 
         var controllRec = playerControll.controllReceivingSystem = networkObj.gameObject.GetComponent<ControllReceivingSystem>();
@@ -122,4 +131,6 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         Destroy(bullet, 20);
     }
 
+    //[ServerRpc]
+    //public void syncA
 }
