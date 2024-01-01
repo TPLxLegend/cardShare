@@ -11,28 +11,28 @@ public class characterInfo : NetworkBehaviour
 {
 
     public NetworkVariable<int> hp = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    #region  alternative if needed 
-    public UnityEvent<ushort> onHPChange = new UnityEvent<ushort>();
-    public ushort HP
-    {
-        get => _hp; set
-        {
-            onHPChange.Invoke(value);
-            _hp = value;
-        }
-    }
-    ushort _hp = 0;
-    [ServerRpc(RequireOwnership = false)]
-    public void setHPServerRpc(ushort value)
-    {
-        setHPClientRpc(value);
-    }
-    [ClientRpc]
-    public void setHPClientRpc(ushort value)
-    {
-        HP = value;
-    }
-    #endregion
+    // #region  alternative if needed 
+    // public UnityEvent<ushort> onHPChange = new UnityEvent<ushort>();
+    // public ushort hp
+    // {
+    //     get => _hp; set
+    //     {
+    //         onHPChange.Invoke(value);
+    //         _hp = value;
+    //     }
+    // }
+    // ushort _hp = 0;
+    // [ServerRpc(RequireOwnership = false)]
+    // public void setHPServerRpc(ushort value)
+    // {
+    //     setHPClientRpc(value);
+    // }
+    // [ClientRpc]
+    // public void setHPClientRpc(ushort value)
+    // {
+    //     hp = value;
+    // }
+    // #endregion
     public int maxHP;
     public byte mp;
     public byte teamID;
