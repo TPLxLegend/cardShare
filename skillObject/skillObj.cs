@@ -66,7 +66,7 @@ public class skillObj : NetworkBehaviour
     public override void OnDestroy()
     {
         base.OnDestroy();
-        Debug.Log("destroy");
+        //Debug.Log("destroy");
         triggerEnter.RemoveAllListeners();
         triggerExit.RemoveAllListeners();
         collisionEnter.RemoveAllListeners();

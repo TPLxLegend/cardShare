@@ -19,7 +19,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     {
         Debug.Log("pos when call rpc:   " + pos);
         Debug.Log("who call it: " + clientID);
-        var newSpawned = Instantiate(playerPrefab, pos, rot);
+        var newSpawned = Instantiate(playerPrefab, pos +new Vector3(Random.Range(-3f,3f), 0f, Random.Range(-3f, 3f)), rot);   //+new Vector3(clientID,0,0)
         netSpawned = newSpawned.GetComponent<NetworkObject>();
         netSpawned.SpawnWithOwnership(clientID);
         Debug.Log(netSpawned + " is own by client: " + netSpawned.OwnerClientId);
@@ -29,7 +29,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         var teamNet = teamIns.GetComponent<NetworkObject>();
         teamNet.SpawnWithOwnership(clientID);
         teamNet.TrySetParent(netSpawned.transform, false);
-        teamNet.TrySetParent(team, false);
+        
 
         //spawn first character into Team 
         var teamNetRef = new NetworkObjectReference(teamNet);
@@ -45,7 +45,9 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         };
         //ref
         NetworkObjectReference netObjRef = new NetworkObjectReference(netSpawned);
-        NetworkBehaviourReference infoRef = new NetworkBehaviourReference(teamNet.GetComponentInChildren<playerInfo>(false));
+        var playerInfo = teamNet.GetComponentInChildren<playerInfo>();
+        Debug.Log("info before call client:" + playerInfo);
+        NetworkBehaviourReference infoRef = new NetworkBehaviourReference(playerInfo);
 
         //call client 
         setPlayerClientRpc(netObjRef, clientID, clientRpcParams);
@@ -120,8 +122,9 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     [ClientRpc]
     public void asignInfoToOtherClientRpc(ulong clientID, NetworkBehaviourReference playerInfoRef)
     {
-        if (NetworkManager.LocalClientId == clientID) return;
+       // if (NetworkManager.LocalClientId == clientID) return;
         playerInfoRef.TryGet(out playerInfo info);
+        Debug.Log("info after call client:" + info);
         otherPlayerInfo.Instance.SpawnInfo(info, clientID);
     }
     #endregion
@@ -130,18 +133,19 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     [ServerRpc(RequireOwnership = false)]
     public void spawnBulletServerRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot)
     {
-        Debug.Log("spawn bullet rpc called");
+        Debug.Log("spawn bullet server rpc called");
         spawnBulletClientRpc(clientID, bulletSpeed, pos, rot);
     }
     [ClientRpc]
     public void spawnBulletClientRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot)
     {
-        Debug.Log("spawn bullet rpc called");
+        Debug.Log("spawn bullet client rpc called");
         GameObject bullet = Instantiate(bulletVFX, pos, rot);
 
+        bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
         var direction = bullet.transform.forward;
-        Debug.Log("spawn bullet with param: pos " + pos + "  rot" + rot +
-            "\n" + "real: pos " + bullet.transform.position + "  rot " + bullet.transform.rotation);
+       
         var vfx = bullet.GetComponent<VisualEffect>();
         GameObject bulletParticle = bullet.transform.GetChild(0).gameObject;
         skillObj bulletScript = bulletParticle.AddComponent<skillObj>();
@@ -160,7 +164,9 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
 
                 info.takeDamage(plinfo.attack, DmgType.Physic);
             }
-            selfGO.GetComponentInParent<VisualEffect>().SendEvent("onExplode");
+            var vfx = selfGO.GetComponentInParent<VisualEffect>();
+            //Debug.Log("vfx of bullet: "+vfx);
+            vfx.SendEvent("onExplode");
             Debug.Log("bullet:" + selfGO + "  collide with " + collideGO);
             Destroy(selfGO);
         });
@@ -189,6 +195,19 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         Dic.singleton.moveTypes[skillMoveType].addMoveAsync(skillObj.gameObject, targetPosition, speed, timeStandby);
         Dic.singleton.filter[detecttype].addFilterion(skillObj);
         Dic.singleton.trigger[triggerType].addTrigger(skillObj, cardEffect);
+    }
+    #endregion
+
+    #region netSpawnObj
+    [ServerRpc(RequireOwnership =false)]
+    public void spawnFromNetManServerRpc(ulong clientId,string namePrefab,Vector3 pos,Quaternion rot)
+    {
+        GameObject prefab = itemPooling.Instance.getPrefab(namePrefab);
+        var go = Instantiate(prefab, pos, rot);
+        var netIns = go.GetComponent<NetworkObject>();
+        netIns.SpawnWithOwnership(clientId);
+
+
     }
     #endregion
 }
