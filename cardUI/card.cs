@@ -39,10 +39,8 @@ public class card : MonoBehaviour
         for (float i = time; i > 0; i -= Time.deltaTime)
         {
             coutUI.text = i.ToString("F2");
-            Debug.Log(i);
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        //coutUI.text = time.ToString();
         couterClock.SetActive(false);
         deckCard.Instance.returnCard(this);
     }

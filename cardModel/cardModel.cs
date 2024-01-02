@@ -57,11 +57,8 @@ public class cardModel : ScriptableObject
         Vector3 dir = (targetPosition - tf.position).normalized * skillObj.GetComponent<SphereCollider>().radius;
         position += 0.1f * dir;
         rot = Quaternion.LookRotation(dir);
-
         GameObject InsSkillObj = Instantiate(skillObj, position, rot);
-
         skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
-
         skillObjScript.source = tf.gameObject;
         Destroy(InsSkillObj, duration);
 
@@ -99,19 +96,13 @@ public class cardModel : ScriptableObject
         Vector3 targetPosition = Dic.singleton.targetMethod[targetMethod].target();
 
         Vector3 dir = (targetPosition - tf.position).normalized * (1 + skillObj.GetComponent<SphereCollider>().radius);
+        Debug.Log("sphere collider radius:" + skillObj.GetComponent<SphereCollider>().radius);
         position += 0.1f * dir;
         Debug.Log("card ins dir:" + dir);
         rot = Quaternion.LookRotation(dir);
 
-        GameObject InsSkillObj = Instantiate(skillObj, position, rot);
-        skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
 
-        skillObjScript.source = tf.gameObject;
-        Destroy(InsSkillObj, duration);
-
-        Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
-        Dic.singleton.filter[detecttype].addFilterion(skillObjScript);
-        Dic.singleton.trigger[triggerType].addTrigger(skillObjScript, cardEffect);
+        //spawnrpc
 
         try
         {

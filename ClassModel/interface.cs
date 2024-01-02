@@ -6,6 +6,7 @@ using Unity.Jobs;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 [RequireComponent(typeof(NetworkObject))]
 public class characterInfo : NetworkBehaviour
 {
@@ -81,12 +82,17 @@ public class characterInfo : NetworkBehaviour
         onAttacked.Invoke(this);
         Debug.Log("testing :" + this + " take dame:" + dmg);
         handle.Complete();
-        hp.Value = dmgCalc.HP[0];
+        // hp.Value = dmgCalc.HP[0];
+        setHPServerRpc(dmgCalc.HP[0]);
         Hp.Dispose();
 
     }
     public virtual void healing(int heal) { }
-
+    [ServerRpc(RequireOwnership = false)]
+    public void setHPServerRpc(int val)
+    {
+        hp.Value = val;
+    }
     public virtual void addChain(Effect effect)
     {
         Debug.Log("on chain listener count:" + onChain.GetPersistentEventCount());
@@ -137,7 +143,6 @@ public struct DamageCalcJob : IJob
     public int critialScaleAddition;
     public void Execute()
     {
-        Debug.Log("crit rate:" + (int)critialRate + "  t:" + t);
         bool isCrit = t < critialRate;
         if (isCrit)
         {

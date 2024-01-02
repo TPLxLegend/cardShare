@@ -25,6 +25,7 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
     {
         var players = skillObj.objInRange;
         var source = skillObj.source;
+        Debug.Log("call resolve");
         if (skillObj.gameObject.TryGetComponent(out MeshRenderer mesh))
         {
             mesh.enabled = false;
@@ -80,8 +81,9 @@ public class WhenHitEnemy : hitTrigger
         {
             return;
         }
-        if (info.teamID != skillObj.source.GetComponent<characterInfo>().teamID)
+        if (info.teamID == PlayerController.Instance.playerInfo.teamID)
         {
+            Debug.Log("hit teamate not enemy so it return ");
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
@@ -98,8 +100,9 @@ public class WhenHitTeammate : hitTrigger
         {
             return;
         }
-        if (info.teamID == skillObj.source.GetComponent<characterInfo>().teamID)
+        if (info.teamID != PlayerController.Instance.playerInfo.teamID)
         {
+            Debug.Log("hit enemy not teamate so it return ");
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
@@ -116,8 +119,9 @@ public class WhenHitSeft : hitTrigger
         {
             return;
         }
-        if (info == skillObj.source.GetComponent<characterInfo>())
+        if (!info.Equals(PlayerController.Instance.playerInfo))
         {
+            Debug.Log("hit something but not itself so it return ");
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
