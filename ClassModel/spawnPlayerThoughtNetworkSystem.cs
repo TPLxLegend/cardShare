@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.VFX;
 
 public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
@@ -19,7 +18,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     {
         Debug.Log("pos when call rpc:   " + pos);
         Debug.Log("who call it: " + clientID);
-        var newSpawned = Instantiate(playerPrefab, pos +new Vector3(Random.Range(-3f,3f), 0f, Random.Range(-3f, 3f)), rot);   //+new Vector3(clientID,0,0)
+        var newSpawned = Instantiate(playerPrefab, pos + new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f)), rot);   //+new Vector3(clientID,0,0)
         netSpawned = newSpawned.GetComponent<NetworkObject>();
         netSpawned.SpawnWithOwnership(clientID);
         Debug.Log(netSpawned + " is own by client: " + netSpawned.OwnerClientId);
@@ -29,7 +28,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         var teamNet = teamIns.GetComponent<NetworkObject>();
         teamNet.SpawnWithOwnership(clientID);
         teamNet.TrySetParent(netSpawned.transform, false);
-        
+
 
         //spawn first character into Team 
         var teamNetRef = new NetworkObjectReference(teamNet);
@@ -122,9 +121,9 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     [ClientRpc]
     public void asignInfoToOtherClientRpc(ulong clientID, NetworkBehaviourReference playerInfoRef)
     {
-       // if (NetworkManager.LocalClientId == clientID) return;
+        // if (NetworkManager.LocalClientId == clientID) return;
         playerInfoRef.TryGet(out playerInfo info);
-        Debug.Log("info after call client:" + info);
+        Debug.Log("info after call client:" + info + "  with info of HP: " + info.hp.Value);
         otherPlayerInfo.Instance.SpawnInfo(info, clientID);
     }
     #endregion
@@ -145,7 +144,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
 
         var direction = bullet.transform.forward;
-       
+
         var vfx = bullet.GetComponent<VisualEffect>();
         GameObject bulletParticle = bullet.transform.GetChild(0).gameObject;
         skillObj bulletScript = bulletParticle.AddComponent<skillObj>();
@@ -195,19 +194,6 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         Dic.singleton.moveTypes[skillMoveType].addMoveAsync(skillObj.gameObject, targetPosition, speed, timeStandby);
         Dic.singleton.filter[detecttype].addFilterion(skillObj);
         Dic.singleton.trigger[triggerType].addTrigger(skillObj, cardEffect);
-    }
-    #endregion
-
-    #region netSpawnObj
-    [ServerRpc(RequireOwnership =false)]
-    public void spawnFromNetManServerRpc(ulong clientId,string namePrefab,Vector3 pos,Quaternion rot)
-    {
-        GameObject prefab = itemPooling.Instance.getPrefab(namePrefab);
-        var go = Instantiate(prefab, pos, rot);
-        var netIns = go.GetComponent<NetworkObject>();
-        netIns.SpawnWithOwnership(clientId);
-
-
     }
     #endregion
 }
