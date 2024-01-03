@@ -84,16 +84,18 @@ public class characterInfo : NetworkBehaviour
         Debug.Log("testing :" + this + " take dame:" + dmg);
         handle.Complete();
         // hp.Value = dmgCalc.HP[0];
-        setHPServerRpc(dmgCalc.HP[0]);
+        afterCalcHPServerRpc(dmgCalc.HP[0],dmg,dmgType);
         Hp.Dispose();
 
     }
-    [ServerRpc(RequireOwnership = false)]
-    public void showDmgServerRpc(int dmg, DmgType dmgType, GameObject target, ulong client)
+    [ClientRpc]
+    public void showDmgClientRpc(int dmg, DmgType dmgType, Vector3 pos, Quaternion rot)
     {
-        var go = Instantiate(playerGeneralInfo.Instance.dmgShowObj, target.transform);
-        var net = go.GetComponent<NetworkObject>();
-        net.SpawnWithOwnership(client);
+        var go = Instantiate(playerGeneralInfo.Instance.dmgShowObj, pos, rot);
+        // var net = go.GetComponent<NetworkObject>();
+        //net.SpawnWithOwnership(client);
+
+        go.AddComponent<alwayFaceCamera>();
         go.GetComponentInChildren<Canvas>().worldCamera = Camera.current;
         var text = go.GetComponentInChildren<TMP_Text>();
         text.text = string.Format("<color={0}>{1}</color>", Dic.singleton.colorOfDame[dmgType], dmg);
@@ -102,9 +104,10 @@ public class characterInfo : NetworkBehaviour
     }
     public virtual void healing(int heal) { }
     [ServerRpc(RequireOwnership = false)]
-    public void setHPServerRpc(int val)
+    public void afterCalcHPServerRpc(int val,int dmg,DmgType dmgType)
     {
         hp.Value = val;
+        showDmgClientRpc(dmg, dmgType,transform.position,transform.rotation);
     }
     public virtual void addChain(Effect effect)
     {

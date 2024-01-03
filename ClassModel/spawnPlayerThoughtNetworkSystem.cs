@@ -162,7 +162,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             Debug.Log("bullet:" + selfGO + "  collide with " + collideGO);
             Destroy(selfGO);
         });
-        Destroy(bullet, 20);
+        Destroy(bullet,10);
     }
     #endregion
     #region cardObject
