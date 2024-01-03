@@ -51,7 +51,8 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         //call client 
         setPlayerClientRpc(netObjRef, clientID, clientRpcParams);
         initInforCanvasOnOtherClientRpc(clientID, netObjRef, infoRef);
-        asignInfoToOtherClientRpc(clientID, infoRef);
+        // thay the cho asignInfoToOtherClientRpc(clientID, infoRef);
+        otherPlayerInfo.Instance.SpawnInfoServerRpc(infoRef, clientID);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -117,14 +118,6 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
                 otherPlayerHpUI.syncValue(n / (float)info.maxHP);
             };
         }
-    }
-    [ClientRpc]
-    public void asignInfoToOtherClientRpc(ulong clientID, NetworkBehaviourReference playerInfoRef)
-    {
-        // if (NetworkManager.LocalClientId == clientID) return;
-        playerInfoRef.TryGet(out playerInfo info);
-        Debug.Log("info after call client:" + info + "  with info of HP: " + info.hp.Value);
-        otherPlayerInfo.Instance.SpawnInfo(info, clientID);
     }
     #endregion
     #region bullet

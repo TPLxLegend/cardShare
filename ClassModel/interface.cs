@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -86,6 +87,18 @@ public class characterInfo : NetworkBehaviour
         setHPServerRpc(dmgCalc.HP[0]);
         Hp.Dispose();
 
+    }
+    [ServerRpc(RequireOwnership = false)]
+    public void showDmgServerRpc(int dmg, DmgType dmgType, GameObject target, ulong client)
+    {
+        var go = Instantiate(playerGeneralInfo.Instance.dmgShowObj, target.transform);
+        var net = go.GetComponent<NetworkObject>();
+        net.SpawnWithOwnership(client);
+        go.GetComponentInChildren<Canvas>().worldCamera = Camera.current;
+        var text = go.GetComponentInChildren<TMP_Text>();
+        text.text = string.Format("<color={0}>{1}</color>", Dic.singleton.colorOfDame[dmgType], dmg);
+
+        Destroy(go, 2);
     }
     public virtual void healing(int heal) { }
     [ServerRpc(RequireOwnership = false)]
