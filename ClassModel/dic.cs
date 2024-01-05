@@ -4,15 +4,15 @@ using UnityEngine;
 
 public partial class Dic
 {
-    public static Dic singleton=new Dic();
-    Dic(){}
+    public static Dic singleton = new Dic();
+    Dic() { }
     public Dictionary<DmgType, string> colorOfDame = new Dictionary<DmgType, string>(){
         {DmgType.Physic,"#ffffff"},
         {DmgType.Fire,"#ff0000"},
         {DmgType.Electric,"#ffff00"},
         {DmgType.Ice,"#0000ff"},
         {DmgType.Poison,"#00ff00"},
-        {DmgType.Dark,"ff00ff"},
+        {DmgType.Dark,"#ff00ff"},
         {DmgType.Light,"#ffff99"}
     };
     public Dictionary<DmgType, Color> colorMap = new Dictionary<DmgType, Color>(){
@@ -56,9 +56,9 @@ public partial class Dic
         {triggerType.whenHitSeft,WhenHitSeft.ins},
         {triggerType.inArea,InArea.ins}
     };
-    public Dictionary<typeTarget,targetMethod> targetMethod = new Dictionary<typeTarget, targetMethod>(){
+    public Dictionary<typeTarget, targetMethod> targetMethod = new Dictionary<typeTarget, targetMethod>(){
         {typeTarget.onCenterScreen,centerOfScreen.ins},
         {typeTarget.quickSeft,quickSeft.ins}
-        
+
     };
 }

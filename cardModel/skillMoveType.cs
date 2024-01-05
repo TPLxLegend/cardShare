@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public enum skillMoveType
 {
-    line, ziczac, trace, circle,tele,notMove
+    line, ziczac, trace, circle, tele, notMove
 }
 public partial class Dic
 {
@@ -37,8 +37,8 @@ public interface SkillMoveType
 }
 public class notMove : SkillMoveType
 {
-    notMove(){}
-    public static notMove ins=new notMove();
+    notMove() { }
+    public static notMove ins = new notMove();
 }
 public class line : SkillMoveType
 {
@@ -85,9 +85,10 @@ public class circle : SkillMoveType
     }
 }
 
-public class tele:SkillMoveType{
-    tele(){}
-    public static tele ins=new tele();
+public class tele : SkillMoveType
+{
+    tele() { }
+    public static tele ins = new tele();
     public void move(GameObject seft, Vector3 targetPosition, float speed)
     {
         seft.transform.position = targetPosition;

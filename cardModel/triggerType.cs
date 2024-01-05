@@ -47,9 +47,17 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
             {
                 Debug.Log("player affected:" + player);
                 var effClone = ScriptableObject.Instantiate(effect);
-                Debug.Log("effclone rate:" + effClone.effect_rate);
+                Debug.Log("effect type:" + effect.GetType() + "\teffclone rate:" + effClone.effect_rate);
                 effClone.source = source;
-                player.GetComponent<playerInfo>().addChain(effClone);
+                //info.addChain(effClone);
+                if (player.TryGetComponent(out enemyInfo enemyInfo))
+                {
+                    enemyInfo.addChain(effClone);
+                }
+                else if (player.TryGetComponent(out ControllReceivingSystem conRec))
+                {
+                    conRec.curCharacterControl.GetComponent<playerInfo>().addChain(effClone);
+                }
             }
         }
         GameObject.Destroy(skillObj.gameObject, 1);

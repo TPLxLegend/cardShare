@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(Rigidbody), typeof(NetworkObject), typeof(clientNetworkTransform))]
 public class skillObj : NetworkBehaviour
@@ -33,7 +34,11 @@ public class skillObj : NetworkBehaviour
         try
         {
             var T = (t.transform.position - transform.position).normalized;
-            effHitObj.GetComponent<UnityEngine.VFX.VisualEffect>().SetVector3("dir", T);
+            if (effHitObj.TryGetComponent(out VisualEffect vfx))
+            {
+                vfx.SetVector3("_dir", T);
+            }
+
         }
         catch
         {

@@ -154,7 +154,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             {
                 var plinfo = PlayerController.Instance.playerInfo;
 
-                info.takeDamage(plinfo.attack, DmgType.Physic);
+                info.takeDamage(plinfo.attack, DmgType.Electric);
             }
             var vfx = selfGO.GetComponentInParent<VisualEffect>();
             //Debug.Log("vfx of bullet: "+vfx);
@@ -162,31 +162,37 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             Debug.Log("bullet:" + selfGO + "  collide with " + collideGO);
             Destroy(selfGO);
         });
-        Destroy(bullet,10);
+        Destroy(bullet, 10);
     }
     #endregion
     #region cardObject
     [ServerRpc(RequireOwnership = false)]
-    public void spawnCardSkillObjectServerRpc(string nameSkillObj, Vector3 pos, Quaternion rot, float duration, skillMoveType skillMoveType,
+    public void spawnCardSkillObjectServerRpc(ulong clientID, string nameSkillObj, Vector3 pos, Quaternion rot, float duration, skillMoveType skillMoveType,
     targetFilterType detecttype, triggerType triggerType, Vector3 targetPosition, float speed, int timeStandby, Effect[] cardeffect)
     {
-        GameObject InsSkillObj = Instantiate(itemPooling.Instance.TakeOut(nameSkillObj), pos, rot);
+        GameObject InsSkillObj = Instantiate(itemPooling.Instance.getPrefab(nameSkillObj), pos, rot);
         skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
+        var netObj = InsSkillObj.GetComponent<NetworkObject>();
+        netObj.Spawn();
 
-        //skillObjScript.source = InsSkillObj;
+        Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
+
         var skillObjRef = new NetworkBehaviourReference(skillObjScript);
-        spawnCardSkillObjectClientRpc(skillObjRef, duration, skillMoveType, detecttype, triggerType, targetPosition, speed, timeStandby, cardeffect);
+        spawnCardSkillObjectClientRpc(clientID, skillObjRef, duration, detecttype, triggerType, cardeffect);
     }
     [ClientRpc]
-    public void spawnCardSkillObjectClientRpc(NetworkBehaviourReference skillObjRef, float duration, skillMoveType skillMoveType,
-     targetFilterType detecttype, triggerType triggerType, Vector3 targetPosition, float speed, int timeStandby, Effect[] cardEffect)
+    public void spawnCardSkillObjectClientRpc(ulong clientID, NetworkBehaviourReference skillObjRef, float duration,
+     targetFilterType detecttype, triggerType triggerType, Effect[] cardEffect)
     {
+        if (clientID != NetworkManager.LocalClientId)
+        {
+            return;
+        }
         skillObjRef.TryGet(out skillObj skillObj);
-        Destroy(skillObj.gameObject, duration);
 
-        Dic.singleton.moveTypes[skillMoveType].addMoveAsync(skillObj.gameObject, targetPosition, speed, timeStandby);
         Dic.singleton.filter[detecttype].addFilterion(skillObj);
         Dic.singleton.trigger[triggerType].addTrigger(skillObj, cardEffect);
+        Destroy(skillObj.gameObject, duration);
     }
     #endregion
 }

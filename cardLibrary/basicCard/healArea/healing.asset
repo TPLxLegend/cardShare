@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
   m_Name: healing
   m_EditorClassIdentifier: 
-  CardName: "h\u1ED3i ph\u1EE5c"
+  CardName: "h\u1ED3i ph\u1EE5c nhanh"
   cardTag: 0100000004000000
   CardType: 2
   charJob: 0

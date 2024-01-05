@@ -103,18 +103,8 @@ public class cardModel : ScriptableObject
 
 
         //spawnrpc
-
-        try
-        {
-            int i = playerGeneralInfo.Instance.getIdSkillObj(skillObj);
-            playerGeneralInfo.Instance.SpawnSkillObjServerRpc(NetworkManager.Singleton.LocalClientId, i, position, rot, skillMoveType, targetPosition, speed, timeStandby);
-
-        }
-        catch
-        {
-            Debug.Log("CardModel system: fail to sync it to other when spawning");
-        }
-
+        spawnPlayerSystem.Instance.spawnCardSkillObjectServerRpc(NetworkManager.Singleton.LocalClientId, skillObj.name, position, rot, duration, skillMoveType,
+        detecttype, triggerType, targetPosition, speed, timeStandby, cardEffect);
         return true;
     }
     //public static void set
