@@ -15,9 +15,9 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
     {
         skillObj.collisionEnter.AddListener((g1, g2) =>
         {
+            Debug.Log("On collision enter, so we start check trigger of :: " + g2.name);
             Resolve(g2, effects, skillObj);
             skillObj.Trigger(g2);
-
         });
     }
 
@@ -42,12 +42,21 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
         foreach (Effect effect in cardEffect)
         {
             Debug.Log("Resolve e:" + effect);
+            try
+            {
+                var dmgEff = effect as damage;
+                Debug.Log("dmg effect  :" + dmgEff.dmg);
+            }
+            catch
+            {
+
+            }
 
             foreach (var player in players)
             {
-                Debug.Log("player affected:" + player);
+                Debug.Log("player affected:" + player + "\n effect:" + effect.name);
                 var effClone = ScriptableObject.Instantiate(effect);
-                Debug.Log("effect type:" + effect.GetType() + "\teffclone rate:" + effClone.effect_rate);
+                Debug.Log("effect detail:" + effect.effect_detail + "\teffclone rate:" + effClone.effect_rate);
                 effClone.source = source;
                 //info.addChain(effClone);
                 if (player.TryGetComponent(out enemyInfo enemyInfo))
@@ -71,9 +80,8 @@ public class WhenHitPlayer : hitTrigger
     WhenHitPlayer() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
-        if (collision.TryGetComponent(out characterInfo info))
+        if (collision.TryGetComponent(out ControllReceivingSystem _))
         {
-            Debug.Log("resolve");
             base.Resolve(collision, cardEffect, skillObj);
         }
     }
@@ -84,14 +92,9 @@ public class WhenHitEnemy : hitTrigger
     WhenHitEnemy() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
-
-        if (!collision.TryGetComponent(out characterInfo info))
+        if (!collision.TryGetComponent(out enemyInfo info))
         {
-            return;
-        }
-        if (info.teamID == PlayerController.Instance.playerInfo.teamID)
-        {
-            Debug.Log("hit teamate not enemy so it return ");
+            Debug.Log("hit not enemy :" + collision.gameObject);
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
@@ -103,14 +106,13 @@ public class WhenHitTeammate : hitTrigger
     WhenHitTeammate() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
-
-        if (!collision.TryGetComponent(out characterInfo info))
+        if (!collision.TryGetComponent(out ControllReceivingSystem conRec))
         {
             return;
         }
-        if (info.teamID != PlayerController.Instance.playerInfo.teamID)
+        if (conRec == PlayerController.Instance.controllReceivingSystem)
         {
-            Debug.Log("hit enemy not teamate so it return ");
+            Debug.Log("hit self");
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
@@ -123,13 +125,12 @@ public class WhenHitSeft : hitTrigger
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
 
-        if (!collision.TryGetComponent(out characterInfo info))
+        if (!collision.TryGetComponent(out ControllReceivingSystem conRec))
         {
             return;
         }
-        if (!info.Equals(PlayerController.Instance.playerInfo))
+        if (!conRec.Equals(PlayerController.Instance.controllReceivingSystem))
         {
-            Debug.Log("hit something but not itself so it return ");
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
@@ -159,7 +160,6 @@ public class InArea : TriggerType
             {
                 var effClone = ScriptableObject.Instantiate(ef);
                 Debug.Log("effclone rate:" + effClone.effect_rate);
-                Debug.Log(skillO.source);
                 effClone.source = skillO.source;
                 collision.GetComponent<ControllReceivingSystem>().curCharacterControl.gameObject.GetComponent<playerInfo>().addChain(effClone);
             }

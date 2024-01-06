@@ -15,7 +15,6 @@ public interface targetFilter
         if (res)
         {
             s.objInRange.Add(go);
-            Debug.Log("onChain:" + go);
         }
     }
     public void offChain(skillObj s, GameObject go)
@@ -62,12 +61,10 @@ public class enemyFilter : targetFilter
     public static enemyFilter ins = new enemyFilter();
     public bool Filter(GameObject go)
     {
-
         if (go.TryGetComponent(out enemyInfo enemy))
         {
             Debug.Log("detected:" + enemy);
-            return (enemy.teamID != PlayerController.Instance.playerInfo.teamID);
-
+            return enemy.teamID != PlayerController.Instance.playerInfo.teamID;
         }
         return false;
     }

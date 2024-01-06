@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 
 public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
@@ -50,7 +51,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
 
         //call client 
         setPlayerClientRpc(netObjRef, clientID, clientRpcParams);
-        initInforCanvasOnOtherClientRpc(clientID, netObjRef, infoRef);
+        spawnNameCanvas(clientID, netSpawned, playerInfo);
         // thay the cho asignInfoToOtherClientRpc(clientID, infoRef);
         otherPlayerInfo.Instance.SpawnInfoServerRpc(infoRef, clientID);
     }
@@ -99,24 +100,30 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         playerControll.loadPlayerInfo(controllRec.curCharacterControl);
     }
     #region UI
-    [ClientRpc]
-    public void initInforCanvasOnOtherClientRpc(ulong clientId, NetworkObjectReference NetRef, NetworkBehaviourReference plInfoRef)
+    public void spawnNameCanvas(ulong clientId, NetworkObject Net, playerInfo plInfo)
     {
-        plInfoRef.TryGet(out playerInfo info);
-        NetRef.TryGet(out NetworkObject Net);
+        GameObject infoCanvas = Instantiate(namePlayerCanvas);
         string plname = playerGeneralInfo.Instance.namePlayer = "Người chơi " + clientId;
-        GameObject infoCanvas = Instantiate(namePlayerCanvas, Net.transform);
         infoCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
         infoCanvas.GetComponentInChildren<TMPro.TMP_Text>().text = plname;
-        infoCanvas.AddComponent<alwayFaceCamera>();
+        infoCanvas.gameObject.AddComponent<alwayFaceCamera>();
+        var insNet = infoCanvas.GetComponent<NetworkObject>();
+        insNet.SpawnWithOwnership(clientId);
+        insNet.TrySetParent(Net.transform, false);
 
-        if (clientId != NetworkManager.Singleton.LocalClientId)
+        var nameRef = new NetworkObjectReference(insNet);
+        var playerInfoRef = new NetworkBehaviourReference(plInfo);
+        handleHpBarClientRpc(clientId, nameRef, playerInfoRef);
+    }
+    [ClientRpc]
+    public void handleHpBarClientRpc(ulong clientID, NetworkObjectReference nameRef, NetworkBehaviourReference playerInfoRef)
+    {
+        nameRef.TryGet(out NetworkObject name);
+        playerInfoRef.TryGet(out playerInfo info);
+        if (NetworkManager.LocalClientId == clientID && name.transform.childCount > 1)
         {
-            var otherPlayerHpUI = infoCanvas.AddComponent<hpBarInMap>();
-            info.hp.OnValueChanged += (o, n) =>
-            {
-                otherPlayerHpUI.syncValue(n / (float)info.maxHP);
-            };
+            name.transform.GetChild(1).gameObject.SetActive(false);
+            return;
         }
     }
     #endregion
