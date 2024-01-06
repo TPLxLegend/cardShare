@@ -56,14 +56,14 @@ public class characterInfo : NetworkBehaviour
     /// <summary>
     /// 0 to 100 in % unit, it is addition dame % when crit 
     /// </summary>
-    public int critDmg = 50;
+    public byte critDmg = 50;
     public byte speed;
     public List<Effect> chainEffect;
     public UnityEvent<characterInfo, Effect> onChain = new UnityEvent<characterInfo, Effect>();
     public UnityEvent<characterInfo> onSpawn = new UnityEvent<characterInfo>();
     public UnityEvent<characterInfo> onDie = new UnityEvent<characterInfo>();
     public UnityEvent<characterInfo> onAttacked = new UnityEvent<characterInfo>();
-    public virtual void takeDamage(int dmg, DmgType dmgType)
+    public virtual void takeDamage(int dmg, DmgType dmgType,byte crit=5,byte critScale=50)
     {
         NativeArray<int> Hp = new NativeArray<int>(1, Allocator.TempJob);
         Hp[0] = hp.Value;
@@ -75,8 +75,8 @@ public class characterInfo : NetworkBehaviour
             Dmg = dmg,
             defense = defence[dmgType],
             scaleDefense = 100,
-            critialRate = critRate,
-            critialScaleAddition = critDmg,
+            critialRate = crit,
+            critialScaleAddition = critScale,
             t = t,
         };
         JobHandle handle = dmgCalc.Schedule();
