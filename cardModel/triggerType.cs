@@ -15,6 +15,7 @@ public class hitTrigger : TriggerType // dung bat ky thu gi ke ca nen
     {
         skillObj.collisionEnter.AddListener((g1, g2) =>
         {
+            Debug.Log("On collision enter, so we start check trigger of :: " + g2.name);
             Resolve(g2, effects, skillObj);
             skillObj.Trigger(g2);
         });
@@ -91,9 +92,9 @@ public class WhenHitEnemy : hitTrigger
     WhenHitEnemy() { }
     public override void Resolve(GameObject collision, Effect[] cardEffect, skillObj skillObj)
     {
-
         if (!collision.TryGetComponent(out enemyInfo info))
         {
+            Debug.Log("hit not enemy :" + collision.gameObject);
             return;
         }
         base.Resolve(collision, cardEffect, skillObj);
