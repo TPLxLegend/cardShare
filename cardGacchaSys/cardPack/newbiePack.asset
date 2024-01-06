@@ -15,7 +15,12 @@ MonoBehaviour:
   namePack: 'goi bai co ban '
   notes: hoi mau, rut lai bai,........
   timeRemain: 'vinh vien '
-  cards: []
-  rates: 
-  outOfRateCard: {fileID: 0}
+  cards:
+  - {fileID: 11400000, guid: 92a10a29b780b7b4a92bad7bb6f432d1, type: 2}
+  - {fileID: 11400000, guid: 08213f2818cbd85459bb5b8bd9970d49, type: 2}
+  - {fileID: 11400000, guid: 7022912305a8b6c4691a6398522fb363, type: 2}
+  - {fileID: 11400000, guid: 35886301369916746a131d8c33386acb, type: 2}
+  - {fileID: 11400000, guid: c620eab178410cc4880496d1fec51c04, type: 2}
+  - {fileID: 11400000, guid: c0c150fd0a9b5cc459d8b827a4df6356, type: 2}
+  rates: 0a0a0a0a0a32
   illustration: {fileID: 21300000, guid: d0cc7037a958cf866abe4ee6e23cc822, type: 3}

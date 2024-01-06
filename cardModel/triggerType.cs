@@ -161,7 +161,15 @@ public class InArea : TriggerType
                 var effClone = ScriptableObject.Instantiate(ef);
                 Debug.Log("effclone rate:" + effClone.effect_rate);
                 effClone.source = skillO.source;
-                collision.GetComponent<ControllReceivingSystem>().curCharacterControl.gameObject.GetComponent<playerInfo>().addChain(effClone);
+                if (collision.TryGetComponent(out enemyInfo info))
+                {
+                    info.addChain(effClone);
+                }
+                else
+                {
+                    collision.GetComponent<ControllReceivingSystem>().curCharacterControl.gameObject.GetComponent<playerInfo>().addChain(effClone);
+
+                }
             }
         }
     }

@@ -131,31 +131,38 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     public GameObject bulletVFX;
     [ServerRpc(RequireOwnership = false)]
     public void spawnBulletServerRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot,
-        DmgType dmgtype,int dmg, byte critRate, byte critScale)
+        DmgType dmgtype,int dmg, byte critRate, byte critScale,string nO="buttlet")
     {
         Debug.Log("spawn bullet server rpc called");
-        spawnBulletClientRpc(clientID, bulletSpeed, pos, rot,dmgtype,dmg,critRate,critScale);
+        spawnBulletClientRpc(clientID, bulletSpeed, pos, rot,dmgtype,dmg,critRate,critScale,nO);
     }
     [ClientRpc]
     public void spawnBulletClientRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot, 
-        DmgType dmgtype,int dmg ,byte critRate,byte critScale)
+        DmgType dmgtype,int dmg ,byte critRate,byte critScale,string nameObj="buttlet")
     {
         Debug.Log("spawn bullet client rpc called");
-        GameObject bullet = Instantiate(bulletVFX, pos, rot);
+        GameObject bullet = Instantiate(itemPooling.Instance.getPrefab(nameObj), pos, rot);
 
-        bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
 
         var direction = bullet.transform.forward;
-
-        var vfx = bullet.GetComponent<VisualEffect>();
         GameObject bulletParticle = bullet.transform.GetChild(0).gameObject;
+        try
+        {
         Color col;
         ColorUtility.TryParseHtmlString( Dic.singleton.colorOfDame[dmgtype],out col);
         
         var v=new Vector3(col.r, col.g, col.b);
         Debug.Log("Vector value of Color:" + v);
         bullet.GetComponent<VisualEffect>().SetVector4("flareColor",v);
+        }
+        catch
+        {
+
+        }
+        
         skillObj bulletScript = bulletParticle.AddComponent<skillObj>();
+        bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
         bulletScript.onUpdate = new UnityEngine.Events.UnityEvent<skillObj>();
         bulletScript.collisionEnter = new UnityEngine.Events.UnityEvent<GameObject, GameObject>();
 
@@ -173,8 +180,7 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             {
                 controllReceiving.curCharacterControl.GetComponent<playerInfo>().takeDamage(dmg, dmgtype, critRate, critScale);
             }
-            var vfx = selfGO.GetComponentInParent<VisualEffect>();
-            //Debug.Log("vfx of bullet: "+vfx);
+          if( selfGO.TryGetComponent(out VisualEffect vfx))
             vfx.SendEvent("onExplode");
             Debug.Log("bullet:" + selfGO + "  collide with " + collideGO);
             Destroy(selfGO);
