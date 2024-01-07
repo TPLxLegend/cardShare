@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f3843d3d611af4fae703fece828411, type: 3}
   m_Name: lightSwordCircle
   m_EditorClassIdentifier: 
-  CardName: "B\u1EA3o h\u1ED9 c\u1EE7a l\u1EEDa"
+  CardName: 'vong tron anh sang '
   cardTag: 040000000500000006000000
   CardType: 2
   charJob: 7
-  cardEffect: []
-  manaCost: 3
+  cardEffect:
+  - {fileID: 11400000, guid: d09a2c9e8a3a4da48a3e51dd6c9290ac, type: 2}
+  manaCost: 1
   timeStandby: 0
-  cooldown: 1
+  cooldown: 5
   duration: 10
   speed: 1
   icon: {fileID: 1161986300, guid: 237d4925987b858a683add4580f5e02c, type: 3}
@@ -27,9 +28,9 @@ MonoBehaviour:
   maxCount: 3
   conditions: []
   skillMoveType: 5
-  targetMethod: 0
-  detecttype: 0
-  triggerType: 2
+  targetMethod: 2
+  detecttype: 2
+  triggerType: 5
   BaseDescription: 
-  skillObj: {fileID: 2071360219153107058, guid: 671035ce0185f9c4d8c6985970b83c0f,
+  skillObj: {fileID: 3783228606162996047, guid: d9213e56272be65fba833ecd4a4ecdfc,
     type: 3}

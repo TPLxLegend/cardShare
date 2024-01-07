@@ -36,7 +36,7 @@ public class skillObj : NetworkBehaviour
             var T = (t.transform.position - transform.position).normalized;
             if (effHitObj.TryGetComponent(out VisualEffect vfx))
             {
-                vfx.SetVector3("_dir", T);
+                vfx.SetVector3("dir", T);
             }
 
         }

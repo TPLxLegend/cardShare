@@ -31,10 +31,10 @@ public class showUpAni : MonoBehaviour
     public IEnumerator changeValue()
     {
         run.Set(1, true);
-        for (float t = 0; t < duration; t += stepTime)
+        for (float t = 0; t < 1; t += stepTime)
         {
             mat.SetFloat("_upValue", t);
-            yield return new WaitForSeconds(stepTime);
+            yield return new WaitForSeconds(stepTime * duration);
         }
     }
 }

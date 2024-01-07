@@ -16,7 +16,8 @@ MonoBehaviour:
   cardTag: 040000000500000006000000
   CardType: 2
   charJob: 7
-  cardEffect: []
+  cardEffect:
+  - {fileID: 11400000, guid: ec2b5fa409756bc41a731bf0ce09c2cc, type: 2}
   manaCost: 3
   timeStandby: 0
   cooldown: 1
@@ -28,8 +29,8 @@ MonoBehaviour:
   conditions: []
   skillMoveType: 5
   targetMethod: 0
-  detecttype: 0
-  triggerType: 2
+  detecttype: 2
+  triggerType: 5
   BaseDescription: 
   skillObj: {fileID: 2071360219153107058, guid: 671035ce0185f9c4d8c6985970b83c0f,
     type: 3}

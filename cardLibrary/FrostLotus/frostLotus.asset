@@ -29,9 +29,9 @@ MonoBehaviour:
   num: 0
   maxCount: 3
   conditions: []
-  skillMoveType: 4
-  targetMethod: 0
-  detecttype: 1
+  skillMoveType: 5
+  targetMethod: 2
+  detecttype: 2
   triggerType: 5
   BaseDescription: 
   skillObj: {fileID: 5199947530810059855, guid: 811ab90cc42e87b4fa73cd8b6af5212d,

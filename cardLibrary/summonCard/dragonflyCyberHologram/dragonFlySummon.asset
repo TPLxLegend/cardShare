@@ -19,16 +19,16 @@ MonoBehaviour:
   cardEffect: []
   manaCost: 1
   timeStandby: 0
-  cooldown: 10
-  duration: 1
+  cooldown: 3
+  duration: 30
   speed: 1
-  icon: {fileID: 0}
+  icon: {fileID: -2029323399, guid: 237d4925987b858a683add4580f5e02c, type: 3}
   num: 0
   maxCount: 3
   conditions: []
   skillMoveType: 5
-  targetMethod: 0
-  detecttype: 0
+  targetMethod: 2
+  detecttype: 2
   triggerType: 2
   BaseDescription: 
   skillObj: {fileID: 8408947808661050046, guid: 49d043cb8160d4e508744839ace98889,

@@ -54,48 +54,41 @@ public class characterInfo : NetworkBehaviour
     /// <summary>
     /// 0 to 100 in % unit, it is addition dame % when crit 
     /// </summary>
-    public int critDmg = 50;
+    public byte critDmg = 50;
     public byte speed;
     public List<Effect> chainEffect;
     public UnityEvent<characterInfo, Effect> onChain = new UnityEvent<characterInfo, Effect>();
     public UnityEvent<characterInfo> onSpawn = new UnityEvent<characterInfo>();
     public UnityEvent<characterInfo> onDie = new UnityEvent<characterInfo>();
     public UnityEvent<characterInfo> onAttacked = new UnityEvent<characterInfo>();
-    public virtual void takeDamage(int dmg, DmgType dmgType)
+    public virtual void takeDamage(int dmg, DmgType dmgType, byte crit = 5, byte critScale = 50)
     {
-        Hp = new NativeArray<int>(1, Allocator.TempJob);
+        NativeArray<int> Hp = new NativeArray<int>(1, Allocator.TempJob);
         Hp[0] = hp.Value;
         System.Random rd = new System.Random();
         int t = rd.Next(0, 100);
-        dmgCalc = new DamageCalcJob()
+        var dmgCalc = new DamageCalcJob()
         {
             HP = Hp,
             Dmg = dmg,
             DmgType = dmgType,
             defense = defence[dmgType],
             scaleDefense = 100,
-            critialRate = critRate,
-            critialScaleAddition = critDmg,
+            critialRate = crit,
+            critialScaleAddition = critScale,
             t = t,
         };
-        handle = dmgCalc.Schedule();
+        var handle = dmgCalc.Schedule();
         onAttacked.Invoke(this);
         Debug.Log("testing :" + this + " take dame:" + dmg);
-
-    }
-    DamageCalcJob dmgCalc;
-    NativeArray<int> Hp;
-    JobHandle handle;
-    void handleTakeDmg()
-    {
-        if (dmgCalc.Equals(null)) return;
-        if (!handle.IsCompleted) { return; }
         handle.Complete();
         Debug.Log("call dmg handle:::::::::::::::::::::::::::::::::::::::::");
-        // hp.Value = dmgCalc.HP[0];
-        afterCalcHPServerRpc(dmgCalc.HP[0], dmgCalc.Dmg, dmgCalc.DmgType);
+        var newHp = dmgCalc.HP[0];
+        Debug.Log("new hp calc:" + newHp);
+        afterCalcHPServerRpc(newHp, dmgType);
         Hp.Dispose();
     }
+
     [ClientRpc]
     public void showDmgClientRpc(int dmg, DmgType dmgType, Vector3 pos, Quaternion rot)
     {
@@ -112,8 +105,10 @@ public class characterInfo : NetworkBehaviour
     }
     public virtual void healing(int heal) { }
     [ServerRpc(RequireOwnership = false)]
-    public void afterCalcHPServerRpc(int val, int dmg, DmgType dmgType)
+    public void afterCalcHPServerRpc(int val, DmgType dmgType)
     {
+        Debug.Log("call ServerRpc set hp");
+        int dmg = hp.Value - val;
         hp.Value = val;
         showDmgClientRpc(dmg, dmgType, transform.position, transform.rotation);
     }
@@ -129,6 +124,10 @@ public class characterInfo : NetworkBehaviour
             StartCoroutine(effect.trigger(gameObject));
             chainEffect.Add(effect);
         }
+    }
+    public void removeChain(Effect effect)
+    {
+        chainEffect.Remove(effect);
     }
     protected virtual void OnEnable()
     {
@@ -171,11 +170,16 @@ public struct DamageCalcJob : IJob
     public void Execute()
     {
         bool isCrit = t < critialRate;
+        float dmg = Dmg;
         if (isCrit)
         {
             Debug.Log("lucky crit");
+            dmg =
+                Dmg *
+                 (isCrit ? (critialScaleAddition * 1f / 100 + 1f) : 1f)
+                ;
         }
-        HP[0] -= (int)(Dmg * (scaleDefense / (float)(scaleDefense + defense)) * (isCrit ? (critialScaleAddition / 100f + 1f) : 1f));
+        HP[0] -= (int)(dmg * (scaleDefense * 1f / (scaleDefense + defense)));
     }
 }
 

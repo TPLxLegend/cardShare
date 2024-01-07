@@ -30,7 +30,7 @@ MonoBehaviour:
   skillMoveType: 0
   targetMethod: 2
   detecttype: 2
-  triggerType: 2
+  triggerType: 5
   BaseDescription: 
   skillObj: {fileID: 4048387581951239484, guid: 633d41001e101f7419566ea74d1a126d,
     type: 3}

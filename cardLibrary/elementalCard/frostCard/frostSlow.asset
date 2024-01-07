@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07a125452d9fecb4fb3b41b271037db1, type: 3}
-  m_Name: fireDirect
+  m_Script: {fileID: 11500000, guid: 03c7bb208a429dd41abc0bec14c47d70, type: 3}
+  m_Name: frostSlow
   m_EditorClassIdentifier: 
   effect_rate: 100
-  duration: 1
-  detail: 
-  callbyseccond: 1
+  duration: 20
+  detail: 'llam cham ke dich trung chieu '
+  callbyseccond: 5
   playerImpacteds: {fileID: 0}
   source: {fileID: 0}
   onStart:
@@ -27,5 +27,4 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
-  dmg: 30
-  dmgType: 1
+  slowScale: 60

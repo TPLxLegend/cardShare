@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.VFX;
 
 public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
@@ -130,25 +128,53 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     #endregion
     #region bullet
     public GameObject bulletVFX;
+    public AudioClip[] bulletSounds;
+    public AudioClip hit;
+    public void playBulletSound(AudioSource audioSource2D)
+    {
+        var i = Random.Range(0, bulletSounds.Length);
+        if (audioSource2D == null) audioSource2D = GetComponent<AudioSource>();
+        audioSource2D.clip = bulletSounds[i];
+        audioSource2D.Play();
+    }
     [ServerRpc(RequireOwnership = false)]
-    public void spawnBulletServerRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot)
+    public void spawnBulletServerRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot,
+        DmgType dmgtype, int dmg, byte critRate, byte critScale, string nO = "buttlet")
     {
         Debug.Log("spawn bullet server rpc called");
-        spawnBulletClientRpc(clientID, bulletSpeed, pos, rot);
+        spawnBulletClientRpc(clientID, bulletSpeed, pos, rot, dmgtype, dmg, critRate, critScale, nO);
     }
     [ClientRpc]
-    public void spawnBulletClientRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot)
+    public void spawnBulletClientRpc(ulong clientID, float bulletSpeed, Vector3 pos, Quaternion rot,
+        DmgType dmgtype, int dmg, byte critRate, byte critScale, string nameObj = "buttlet")
     {
         Debug.Log("spawn bullet client rpc called");
-        GameObject bullet = Instantiate(bulletVFX, pos, rot);
+        GameObject bullet = Instantiate(itemPooling.Instance.getPrefab(nameObj), pos, rot);
 
-        bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
 
         var direction = bullet.transform.forward;
-
-        var vfx = bullet.GetComponent<VisualEffect>();
         GameObject bulletParticle = bullet.transform.GetChild(0).gameObject;
+        try
+        {
+            Color col;
+            ColorUtility.TryParseHtmlString(Dic.singleton.colorOfDame[dmgtype], out col);
+
+            var v = new Vector3(col.r, col.g, col.b);
+            Debug.Log("Vector value of Color:" + v);
+            bullet.GetComponent<VisualEffect>().SetVector4("flareColor", v);
+        }
+        catch
+        {
+
+        }
+
         skillObj bulletScript = bulletParticle.AddComponent<skillObj>();
+        bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
+        AudioSource hitSound = bulletParticle.AddComponent<AudioSource>();
+        AudioSource shootSound = bulletParticle.AddComponent<AudioSource>();
+        hitSound.clip = hit;
+        playBulletSound(shootSound);
+
         bulletScript.onUpdate = new UnityEngine.Events.UnityEvent<skillObj>();
         bulletScript.collisionEnter = new UnityEngine.Events.UnityEvent<GameObject, GameObject>();
 
@@ -158,15 +184,17 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         });
         bulletScript.collisionEnter.AddListener((selfGO, collideGO) =>
         {
+            selfGO.GetComponent<AudioSource>().Play();
             if (collideGO.TryGetComponent(out enemyInfo info))
             {
-                var plinfo = PlayerController.Instance.playerInfo;
-
-                info.takeDamage(plinfo.attack, DmgType.Electric);
+                info.takeDamage(dmg, dmgtype, critRate, critScale);
             }
-            var vfx = selfGO.GetComponentInParent<VisualEffect>();
-            //Debug.Log("vfx of bullet: "+vfx);
-            vfx.SendEvent("onExplode");
+            if (collideGO.TryGetComponent(out ControllReceivingSystem controllReceiving))
+            {
+                controllReceiving.curCharacterControl.GetComponent<playerInfo>().takeDamage(dmg, dmgtype, critRate, critScale);
+            }
+            if (selfGO.TryGetComponent(out VisualEffect vfx))
+                vfx.SendEvent("onExplode");
             Debug.Log("bullet:" + selfGO + "  collide with " + collideGO);
             Destroy(selfGO);
         });
