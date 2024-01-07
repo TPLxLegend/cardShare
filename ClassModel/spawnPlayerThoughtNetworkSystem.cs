@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -175,8 +176,9 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
     #region cardObject
     [ServerRpc(RequireOwnership = false)]
     public void spawnCardSkillObjectServerRpc(ulong clientID, string nameSkillObj, Vector3 pos, Quaternion rot, float duration, skillMoveType skillMoveType,
-    targetFilterType detecttype, triggerType triggerType, Vector3 targetPosition, float speed, int timeStandby, Effect[] cardeffect)
+    targetFilterType detecttype, triggerType triggerType, Vector3 targetPosition, float speed, int timeStandby, byte[] cardeffectIndexS)
     {
+        //
         GameObject InsSkillObj = Instantiate(itemPooling.Instance.getPrefab(nameSkillObj), pos, rot);
         skillObj skillObjScript = InsSkillObj.GetComponent<skillObj>();
         var netObj = InsSkillObj.GetComponent<NetworkObject>();
@@ -185,11 +187,11 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         Dic.singleton.moveTypes[skillMoveType].addMoveAsync(InsSkillObj, targetPosition, speed, timeStandby);
 
         var skillObjRef = new NetworkBehaviourReference(skillObjScript);
-        spawnCardSkillObjectClientRpc(clientID, skillObjRef, duration, detecttype, triggerType, cardeffect);
+        spawnCardSkillObjectClientRpc(clientID, skillObjRef, duration, detecttype, triggerType, cardeffectIndexS);
     }
     [ClientRpc]
     public void spawnCardSkillObjectClientRpc(ulong clientID, NetworkBehaviourReference skillObjRef, float duration,
-     targetFilterType detecttype, triggerType triggerType, Effect[] cardEffect)
+     targetFilterType detecttype, triggerType triggerType, byte[] cardeffectIndexS)
     {
         if (clientID != NetworkManager.LocalClientId)
         {
@@ -198,6 +200,8 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         skillObjRef.TryGet(out skillObj skillObj);
 
         Dic.singleton.filter[detecttype].addFilterion(skillObj);
+
+        var cardEffect = itemPooling.Instance.getEffect(cardeffectIndexS);
         Dic.singleton.trigger[triggerType].addTrigger(skillObj, cardEffect);
         Destroy(skillObj.gameObject, duration);
     }

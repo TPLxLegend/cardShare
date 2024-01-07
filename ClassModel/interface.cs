@@ -7,7 +7,6 @@ using Unity.Jobs;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
 [RequireComponent(typeof(NetworkObject))]
 public class characterInfo : NetworkBehaviour
 {
@@ -65,28 +64,38 @@ public class characterInfo : NetworkBehaviour
     public UnityEvent<characterInfo> onAttacked = new UnityEvent<characterInfo>();
     public virtual void takeDamage(int dmg, DmgType dmgType)
     {
-        NativeArray<int> Hp = new NativeArray<int>(1, Allocator.TempJob);
+        Hp = new NativeArray<int>(1, Allocator.TempJob);
         Hp[0] = hp.Value;
         System.Random rd = new System.Random();
         int t = rd.Next(0, 100);
-        DamageCalcJob dmgCalc = new DamageCalcJob()
+        dmgCalc = new DamageCalcJob()
         {
             HP = Hp,
             Dmg = dmg,
+            DmgType = dmgType,
             defense = defence[dmgType],
             scaleDefense = 100,
             critialRate = critRate,
             critialScaleAddition = critDmg,
             t = t,
         };
-        JobHandle handle = dmgCalc.Schedule();
+        handle = dmgCalc.Schedule();
         onAttacked.Invoke(this);
         Debug.Log("testing :" + this + " take dame:" + dmg);
-        handle.Complete();
-        // hp.Value = dmgCalc.HP[0];
-        afterCalcHPServerRpc(dmgCalc.HP[0], dmg, dmgType);
-        Hp.Dispose();
 
+    }
+    DamageCalcJob dmgCalc;
+    NativeArray<int> Hp;
+    JobHandle handle;
+    void handleTakeDmg()
+    {
+        if (dmgCalc.Equals(null)) return;
+        if (!handle.IsCompleted) { return; }
+        handle.Complete();
+        Debug.Log("call dmg handle:::::::::::::::::::::::::::::::::::::::::");
+        // hp.Value = dmgCalc.HP[0];
+        afterCalcHPServerRpc(dmgCalc.HP[0], dmgCalc.Dmg, dmgCalc.DmgType);
+        Hp.Dispose();
     }
     [ClientRpc]
     public void showDmgClientRpc(int dmg, DmgType dmgType, Vector3 pos, Quaternion rot)
@@ -157,6 +166,9 @@ public struct DamageCalcJob : IJob
     //t is random 0 to 99 for compare "<" with crit rate 
     public int t;
     public int critialScaleAddition;
+
+    public DmgType DmgType;
+
     public void Execute()
     {
         bool isCrit = t < critialRate;

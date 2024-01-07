@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Netcode;
@@ -104,7 +105,7 @@ public class cardModel : ScriptableObject
 
         //spawnrpc
         spawnPlayerSystem.Instance.spawnCardSkillObjectServerRpc(NetworkManager.Singleton.LocalClientId, skillObj.name, position, rot, duration, skillMoveType,
-        detecttype, triggerType, targetPosition, speed, timeStandby, cardEffect);
+        detecttype, triggerType, targetPosition, speed, timeStandby, itemPooling.Instance.getIndex(cardEffect));
         return true;
     }
     //public static void set
