@@ -172,6 +172,8 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         bullet.GetComponentInChildren<Rigidbody>().isKinematic = false;
         AudioSource hitSound = bulletParticle.AddComponent<AudioSource>();
         AudioSource shootSound = bulletParticle.AddComponent<AudioSource>();
+        shootSound.volume = 0.1f;
+        shootSound.bypassEffects = true;
         hitSound.clip = hit;
         playBulletSound(shootSound);
 

@@ -45,6 +45,7 @@ public class deckCard : Singleton<deckCard>
             card.addCard(1);
             cards.Add(card);
         }
+        Debug.Log("add thanh cong la bai:" + card);
         return true;
     }
     public bool addCard(List<cardModel> listAdd)

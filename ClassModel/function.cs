@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class function
 {
-    public static T[] GetAllInstances<T>() where T : ScriptableObject
-    {
-        string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);
-        T[] instances = new T[guids.Length];
-        for (int i = 0; i < guids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            instances[i] = AssetDatabase.LoadAssetAtPath<T>(path);
-        }
-        return instances;
-    }
+    //public static T[] GetAllInstances<T>() where T : ScriptableObject
+    //{
+    //    string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);
+    //    T[] instances = new T[guids.Length];
+    //    for (int i = 0; i < guids.Length; i++)
+    //    {
+    //        string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+    //        instances[i] = AssetDatabase.LoadAssetAtPath<T>(path);
+    //    }
+    //    return instances;
+    //}
 
     public static Vector3 float3ToVector3(float3 input)
     {
