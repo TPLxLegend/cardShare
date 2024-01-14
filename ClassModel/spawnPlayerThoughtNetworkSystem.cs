@@ -187,8 +187,10 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
         bulletScript.collisionEnter.AddListener((selfGO, collideGO) =>
         {
             selfGO.GetComponent<AudioSource>().Play();
+            
             if (collideGO.TryGetComponent(out enemyInfo info))
             {
+                Debug.Log("collide with :" + collideGO);
                 info.takeDamage(dmg, dmgtype, critRate, critScale);
             }
             if (collideGO.TryGetComponent(out ControllReceivingSystem controllReceiving))
@@ -197,7 +199,6 @@ public class spawnPlayerSystem : SingletonNetworkPersistent<spawnPlayerSystem>
             }
             if (selfGO.TryGetComponent(out VisualEffect vfx))
                 vfx.SendEvent("onExplode");
-            Debug.Log("bullet:" + selfGO + "  collide with " + collideGO);
             Destroy(selfGO);
         });
         Destroy(bullet, 10);
